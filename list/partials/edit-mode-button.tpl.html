@@ -1,0 +1,16 @@
+<span class="pull-right">
+    <button class="btn btn-{{size}} btn-primary" ng-if="!$parent.$list.$edit" type="button" ng-click="vm.changeEditMode()">
+        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> 
+        <span>Edit</span>
+    </button>
+    
+    <button class="btn btn-{{size}} btn-success" ng-if="$parent.$list.$edit" type="button" ng-click="vm.saveEditData()">
+        <span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span> 
+        <span>Save</span>
+    </button>
+    
+    <button class="btn btn-{{size}} btn-default" ng-if="$parent.$list.$edit" type="button" ng-click="vm.cancelEditData()">
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 
+        <span>Cancel</span>
+    </button>
+</span>

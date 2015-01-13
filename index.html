@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html ng-app="d" ng-strict-di>
+
+<head>
+    <meta charset="utf-8" />
+    <title>AngularJS Plunker</title>
+    <link data-require="bootstrap-css@*" data-semver="3.1.1" rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+    <script>
+        document.write('<base href="' + document.location + '" />');
+    </script>
+    <link rel="stylesheet" href="style.css" />
+    <script data-require="angular.js@1.3.x" src="https://code.angularjs.org/1.3.5/angular.js" data-semver="1.3.5"></script>
+    <script data-require="jquery@*" data-semver="2.1.1" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script data-require="bootstrap@3.1.1" data-semver="3.1.1" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-sanitize.js"></script>
+</head>
+
+<body ng-controller="MainController as vm">
+
+    <br/>
+
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <d-list name="someNameList" data-elements="vm.elements" data-setup="vm.setup">
+                    <action-box data-label="Select" data-icon="unchecked" data-size="sm">
+                        <action-select-all></action-select-all>
+                        <action-select-none></action-select-none>
+                        <action-select-inverse></action-select-inverse>
+                    </action-box>
+                    <action-box data-label="Actions" data-icon="cog" data-size="sm">
+                        <action-delete></action-delete>
+                        <action-add-item></action-add-item>
+                    </action-box>
+                    <edit-mode-button data-size="sm"></edit-mode-button>
+                </d-list>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <d-list name="someNameList2" data-elements="vm.els" data-url="vm.url">
+                    <action-box data-label="Select" data-icon="unchecked" data-size="sm">
+                        <action-select-all></action-select-all>
+                        <action-select-none></action-select-none>
+                        <action-select-inverse></action-select-inverse>
+                    </action-box>
+                    <edit-mode-button data-size="sm"></edit-mode-button>
+                </d-list>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <d-filters data-list-name="someNameList" data-fields="vm.fields" data-setup="vm.setup"></d-filters>
+            </div>
+        </div>
+    </div>
+
+    <script src="dist/dList.min.js"></script>
+</body>
+
+</html>

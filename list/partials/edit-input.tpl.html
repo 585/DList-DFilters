@@ -1,0 +1,5 @@
+<div class="form-group">
+    <select ng-if="vm.setup.type === 'select'" ng-model="vm.editValue" ng-options="option for option in vm.selectDataOptions" class="form-control">
+    </select>
+    <input ng-if="vm.setup.type !== 'select'" type="text" class="form-control" ng-model="vm.editValue">
+</div>
