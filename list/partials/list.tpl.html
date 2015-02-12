@@ -5,13 +5,14 @@
     <table class="table table-hover">
         <thead ng-if="$list.$setup.enable.header">
             <tr>
-                <th ng-if="$list.$setup.enable.checkboxes">
-
-                </th>
+                <th ng-if="$list.$setup.enable.checkboxes"></th>
                 <th ng-repeat="header in $list.$headers">
-                    <a href="" ng-click="$list.sortBy(header)">{{header | capitalize}}
+                    <a ng-if="$list.headerIsSortable(header)" href="" ng-click="$list.sortBy(header)">{{header | capitalize}}
                         <i ng-if="$list.$sort.by === header" class="glyphicon" ng-class="{'glyphicon-chevron-down': $list.$sort.order === 'desc', 'glyphicon-chevron-up': $list.$sort.order === 'asc'}" style="font-size: 10px; margin: 4px 0 0 4px"></i>
                     </a>
+                    <span ng-if="!$list.headerIsSortable(header)">
+                        {{header | capitalize}}
+                    </span>
                 </th>
             </tr>
         </thead>
@@ -47,4 +48,3 @@
         <div>Total pages: {{$list.$pagination.totalPages()}}</div>
     </section>
 </div>
-

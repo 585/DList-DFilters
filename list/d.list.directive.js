@@ -119,11 +119,26 @@
                 }
             };
 
+            $list.headerIsSortable = headerIsSortable;
+
+            function headerIsSortable(header) {
+                return !$list.$setup.columns ||
+                    !$list.$setup.columns.sortables ||
+                    $list.$setup.columns.sortables.indexOf(header) > -1;
+            }
+
             function _getHeaders(element) {
                 var headers = [];
                 for (var key in element) {
                     if (element.hasOwnProperty(key) && key[0] !== '$') {
-                        headers.push(key);
+                        if ($list.$setup.columns && $list.$setup.columns.include) {
+                            if ($list.$setup.columns.include.indexOf(key) > -1) {
+                                headers.push(key);
+                            }
+                        } else {
+                            headers.push(key);
+                        }
+
                     }
                 }
                 return headers;

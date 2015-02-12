@@ -20,7 +20,7 @@
             defaults: {
                 sort: {
                     order: 'asc',
-                    by: 'name'
+                    by: 'surname'
                 },
                 pagination: {
                     pageSize: 2,
@@ -58,11 +58,12 @@
                 }
             },
             columns: {
-                exclude: ['id'],
-                order: []
+                include: ['name', 'surname'],
+                order: [],
+                sortables: ['surname']
             }
         };
-        
+
         vm.elements = [{
             id: 1,
             name: 'Olivia',
