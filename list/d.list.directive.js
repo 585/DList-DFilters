@@ -69,6 +69,7 @@
                 }
             };
 
+            $list.$headerLabels = $list.$setup.columns && $list.$setup.columns.labels ? $list.$setup.columns.labels : {};
             $list.$sort = $list.$setup && $list.$setup.defaults ? $list.$setup.defaults.sort : {};
 
             $list.$pagination = {
@@ -120,21 +121,47 @@
             };
 
             $list.headerIsSortable = headerIsSortable;
+            $list.getHeaderLabel = getHeaderLabel;
 
-            function headerIsSortable(header) {
+            /**
+             * Checks wheter a provided header key should be sortable or not
+             * @param {String} header Represents the key name of the header to be checked
+             * @return {Boolean}
+             */
+            function headerIsSortable(headerKey) {
                 return !$list.$setup.columns ||
                     !$list.$setup.columns.sortables ||
-                    $list.$setup.columns.sortables.indexOf(header) > -1;
+                    $list.$setup.columns.sortables.indexOf(headerKey) > -1;
+            }
+
+            /**
+             * [getHeaderLabel description]
+             */
+            function getHeaderLabel(headerKey) {
+                if (!$list.$headerLabels) {
+                    return headerKey;
+                } else {
+                    return $list.$headerLabels[headerKey] ? $list.$headerLabels[headerKey] : headerKey;
+                }
             }
 
             function _getHeaders(element) {
                 var headers = [];
                 for (var key in element) {
                     if (element.hasOwnProperty(key) && key[0] !== '$') {
-                        if ($list.$setup.columns && $list.$setup.columns.include) {
-                            if ($list.$setup.columns.include.indexOf(key) > -1) {
+                        // if a setup for the list columns is provided, then check what to include and exclude
+                        if ($list.$setup.columns) {
+                            //if header is found in the 'include' list
+                            if ($list.$setup.columns.include && $list.$setup.columns.include.indexOf(key) > -1) {
                                 headers.push(key);
                             }
+                            //if header is found in the 'exclude' list
+                            if ($list.$setup.columns.exclude && $list.$setup.columns.exclude.indexOf(key) > -1) {
+                                if (headers.indexOf(key) > -1) {
+                                    headers.splice(headers.indexOf(key), 1);
+                                }
+                            }
+                        // if no setup for the columns is provided, then add all keys as headers
                         } else {
                             headers.push(key);
                         }

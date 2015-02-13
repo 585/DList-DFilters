@@ -58,9 +58,13 @@
                 }
             },
             columns: {
-                include: ['name', 'surname'],
+                include: ['name', 'surname', 'age'],
+                exclude: ['age'],
                 order: [],
-                sortables: ['surname']
+                sortables: ['surname'],
+                labels: {
+                    name: 'Name own label'
+                }
             }
         };
 
