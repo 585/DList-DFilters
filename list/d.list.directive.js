@@ -13,7 +13,8 @@
                 elements: '&',
                 setup: '&',
                 url: '&',
-                name: '@'
+                name: '@',
+                responsiveMode: '=responsive'
             },
             controller: listController,
             controllerAs: '$list'
@@ -28,7 +29,6 @@
             $list.$name = $scope.name;
             $list.selected = selected;
             $list.$edit = false;
-
             $list.sortBy = sortBy;
 
             $list.$setup = $scope.setup() || {
@@ -149,23 +149,26 @@
                 var headers = [];
                 for (var key in element) {
                     if (element.hasOwnProperty(key) && key[0] !== '$') {
-                        // if a setup for the list columns is provided, then check what to include and exclude
                         if ($list.$setup.columns) {
-                            //if header is found in the 'include' list
-                            if ($list.$setup.columns.include && $list.$setup.columns.include.indexOf(key) > -1) {
+                            if (!$list.$setup.columns.include) {
+                                // if no setup for include columns is provided, then add all keys as headers
                                 headers.push(key);
+                            } else {
+                                // otherwise add only include keys to headers
+                                if ($list.$setup.columns.include && $list.$setup.columns.include.indexOf(key) > -1) {
+                                    //if header is found in the 'include' list
+                                    headers.push(key);
+                                }
                             }
-                            //if header is found in the 'exclude' list
+                            //if header is found in the 'exclude' list, remove it
                             if ($list.$setup.columns.exclude && $list.$setup.columns.exclude.indexOf(key) > -1) {
                                 if (headers.indexOf(key) > -1) {
                                     headers.splice(headers.indexOf(key), 1);
                                 }
                             }
-                        // if no setup for the columns is provided, then add all keys as headers
                         } else {
                             headers.push(key);
                         }
-
                     }
                 }
                 return headers;

@@ -12,12 +12,11 @@
             },
             scope: {
                 template: '&',
-                item: '&model'
+                value: '&model'
             },
             controller: function($scope) {
                 var $item = this;
-                angular.extend($item, $scope.item());
-
+                $item.value = $scope.value();
             },
             controllerAs: '$item'
         };

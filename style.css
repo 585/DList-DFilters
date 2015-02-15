@@ -1,2 +1,45 @@
 /* Put your css in here */
 
+.d-list {
+  color: #444;
+  font-weight: 300; }
+  .d-list .d-list-table {
+    width: 100%; }
+    .d-list .d-list-table__header {
+      padding: 10px 5px;
+      font-weight: 400; }
+    .d-list .d-list-table__header-sortable {
+      color: #EA252C; }
+    .d-list .d-list-table__body-cell {
+      padding: 10px 5px;
+      border-top: 1px solid #E4E4E4;
+      border-bottom: 1px solid #E4E4E4; }
+      .d-list .d-list-table__body-cell a {
+        text-decoration: underline;
+        color: #EA252C; }
+    .d-list .d-list-table__body-cell-checkbox {
+      text-align: center; }
+      .d-list .d-list-table__body-cell-checkbox input[type="checkbox"] {
+        width: 18px;
+        height: 18px; }
+
+.d-list-pagination {
+  margin-top: 25px; }
+  .d-list-pagination__page-links {
+    margin-bottom: 10px;
+    width: 20%; }
+
+.d-list-table-small {
+  margin-top: 30px;
+  width: 100%; }
+  .d-list-table-small__header {
+    font-weight: 400;
+    padding: 8px 15px 8px 8px; }
+  .d-list-table-small__header-sortable {
+    color: #EA252C; }
+  .d-list-table-small__body-cell {
+    border-top: 1px solid #E4E4E4;
+    border-bottom: 1px solid #E4E4E4; }
+  .d-list-table-small__row {
+    border-top: 1px solid #E4E4E4;
+    border-bottom: 1px solid #E4E4E4; }

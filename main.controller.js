@@ -45,7 +45,7 @@
                 }
             },
             templates: {
-                name: '<div>This is a custom template for <b>{{$item.name}}</b></div>'
+                name: '<div>This is a custom template for <b>{{$item.value}}</b></div>'
             },
             edit: {
                 name: {
