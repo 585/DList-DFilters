@@ -3,14 +3,15 @@
     angular.module('d.Actions', []);
     angular.module('d.List', []);
     angular.module('d.Keyboard', []);
-    angular.module('d', ['d.Filters', 'd.Actions', 'd.List', 'd.Keyboard', 'ngSanitize']);
+    angular.module('d', ['d.Filters', 'd.Actions', 'd.List', 'd.Keyboard', 'ngSanitize', 'bsDropDown']);
 })();
+
 angular.module("d").run(["$templateCache", function($templateCache) {$templateCache.put("action.add-item.tpl.html","<li>\n    <a href=\"\" ng-click=\"savm.selectAll()\"><i class=\"glyphicon glyphicon-plus\"></i> Add item</a>\n</li>");
 $templateCache.put("action.delete-items.tpl.html","<li>\n    <a href=\"\" ng-click=\"vm.deleteItems()\"><i class=\"glyphicon glyphicon-remove\"></i> Delete</a>\n</li>");
 $templateCache.put("action.select-all.tpl.html","<li>\n    <a href=\"\" ng-click=\"savm.selectAll()\">Select All</a>\n</li>");
 $templateCache.put("action.select-inverse.tpl.html","<li>\n    <a href=\"\" ng-click=\"sivm.selectInverse()\">Select Inverse</a>\n</li>");
 $templateCache.put("action.select-none.tpl.html","<li>\n    <a href=\"\" ng-click=\"snvm.selectNone()\">Select None</a>\n</li>");
-$templateCache.put("action-box.tpl.html","<div class=\"btn-group\">\n	<button class=\"btn btn-default btn-{{size}} dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\" aria-expanded=\"false\">\n		<span class=\"glyphicon glyphicon-{{icon}}\" aria-hidden=\"true\"></span> <span ng-bind=\"label\"></span> <span class=\"caret\"></span>\n	</button>\n	<ul class=\"dropdown-menu\" role=\"menu\" ng-transclude></ul>\n</div>\n");
+$templateCache.put("action-box.tpl.html","<div class=\"btn-group\">\n	<button class=\"btn btn-default btn-{{size}} dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\" aria-expanded=\"false\" bs-drop-down>\n		<span class=\"glyphicon glyphicon-{{icon}}\" aria-hidden=\"true\"></span> <span ng-bind=\"label\"></span> <span class=\"caret\"></span>\n	</button>\n	<ul class=\"dropdown-menu\" role=\"menu\" ng-transclude></ul>\n</div>\n");
 $templateCache.put("filters.boot.tpl.html","<form role=\"form\" class=\"row\">\n    <div ng-repeat=\"field in $filters.$fields\" ng-switch=\"field.type\">\n        <div class=\"form-group col-xs-{{field.size}}\" ng-switch-when=\"text\">\n            <label for=\"{{field.ngModel}}\">{{field.label}}</label>\n            <input type=\"text\" name=\"{{field.ngModel}}\" class=\"form-control\" ng-model=\"$filters.$model[field.ngModel]\" />\n        </div>\n        <div class=\"form-group col-xs-{{field.size}}\" ng-switch-when=\"select\">\n            <label for=\"{{field.ngModel}}\">{{field.label}}</label>\n            <select name=\"{{field.ngModel}}\" class=\"form-control\" ng-model=\"$filters.$model[field.ngModel]\" ng-options=\"option.key as option.value for option in field.ngOptions\">\n            </select>\n        </div>\n        <div class=\"checkbox col-xs-{{field.size}}\" ng-switch-when=\"checkbox\">\n            <label>\n                <input type=\"checkbox\" ng-model=\"$filters.$model[field.ngModel]\"/>{{field.label}}\n            </label>\n        </div>\n    </div>\n    <button class=\"btn btn-primary\" ng-click=\"$filters.submit()\">Submit</button>\n    {{$filters.$model}}\n</form>\n");
 $templateCache.put("filters.tpl.html","<form role=\"form\" class=\"row\">\n    <div ng-repeat=\"field in $filters.$fields()\" ng-switch=\"field.type\">\n        <div class=\"form-group col-xs-{{field.size}}\" ng-switch-when=\"text\">\n            <label for=\"{{field.ngModel}}\">{{field.label}}</label>\n            <input type=\"text\" name=\"{{field.ngModel}}\" class=\"form-control\" ng-model=\"$filters.$model[field.ngModel]\"\n                ng-model-options=\"{ updateOn: \'default blur\', debounce: {\'default\': 500, \'blur\': 0} }\" />\n        </div>\n        <div class=\"form-group col-xs-{{field.size}}\" ng-switch-when=\"select\">\n            <label for=\"{{field.ngModel}}\">{{field.label}}</label>\n            <select name=\"{{field.ngModel}}\" class=\"form-control\" ng-model=\"$filters.$model[field.ngModel]\" ng-options=\"option.key as option.value for option in field.ngOptions\">\n            </select>\n        </div>\n        <div class=\"checkbox col-xs-{{field.size}}\" ng-switch-when=\"checkbox\">\n            <label>\n                <input type=\"checkbox\" ng-model=\"$filters.$model[field.ngModel]\"/>{{field.label}}\n            </label>\n        </div>\n    </div>\n    <button ng-if=\"!$filters.autoSubmit\" class=\"btn btn-primary\" ng-click=\"$filters.submit()\">Submit</button>\n</form>\n");
 $templateCache.put("edit-input.tpl.html","<div class=\"form-group\">\n    <select ng-if=\"vm.setup.type === \'select\'\" ng-model=\"vm.editValue\" ng-options=\"option for option in vm.selectDataOptions\" class=\"form-control\">\n    </select>\n    <input ng-if=\"vm.setup.type !== \'select\'\" type=\"text\" class=\"form-control\" ng-model=\"vm.editValue\">\n</div>");
@@ -133,6 +134,25 @@ $templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclu
             label: 'Single?',
             ngModel: 'single'
         }];
+    }
+})();
+
+(function() {
+    angular.module('bsDropDown', [])
+    .directive('bsDropDown', bsDropDown);
+
+    function bsDropDown() {
+        return {
+            restrict: 'A',
+            link: bsDropDownLink
+        };
+
+        function bsDropDownLink(scope, element) {
+            element.on('click', function() {
+                $('.dropdown-menu').not(element.next()).hide();
+                $(element).next().toggle();
+            })
+        }
     }
 })();
 
