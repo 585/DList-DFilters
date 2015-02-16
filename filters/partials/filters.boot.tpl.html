@@ -1,9 +1,8 @@
 <form role="form" class="row">
-    <div ng-repeat="field in $filters.$fields()" ng-switch="field.type">
+    <div ng-repeat="field in $filters.$fields" ng-switch="field.type">
         <div class="form-group col-xs-{{field.size}}" ng-switch-when="text">
             <label for="{{field.ngModel}}">{{field.label}}</label>
-            <input type="text" name="{{field.ngModel}}" class="form-control" ng-model="$filters.$model[field.ngModel]"
-                ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0} }" />
+            <input type="text" name="{{field.ngModel}}" class="form-control" ng-model="$filters.$model[field.ngModel]" />
         </div>
         <div class="form-group col-xs-{{field.size}}" ng-switch-when="select">
             <label for="{{field.ngModel}}">{{field.label}}</label>
@@ -16,5 +15,6 @@
             </label>
         </div>
     </div>
-    <button ng-if="!$filters.autoSubmit" class="btn btn-primary" ng-click="$filters.submit()">Submit</button>
+    <button class="btn btn-primary" ng-click="$filters.submit()">Submit</button>
+    {{$filters.$model}}
 </form>

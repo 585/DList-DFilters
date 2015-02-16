@@ -184,14 +184,10 @@
                 return total;
             }
 
-            function _loadModel() {
+            function _loadModel(data) {
                 if ($scope.url()) {
-                    var data = {
-                        page: $list.$pagination.data.page,
-                        pageSize: $list.$pagination.data.pageSize
-
-                    };
-                    dListService.getData($list.$setup.data.onSuccess, $list.$setup.data.onError).then(function(response) {
+                    var postData = angular.extend({}, data, $list.$sort, $list.$pagination.data);
+                    dListService.getData($list.$setup.data.onSuccess, $list.$setup.data.onError, postData).then(function(response) {
                         _elements = $filter('orderBy')(response, $list.$sort.by, $list.$sort.order === 'desc');
                         _addElementsCheckboxes();
                         $list.$pagination.data.total = _elements.length;
@@ -237,7 +233,7 @@
                 });
 
                 $scope.$on($list.$name + 'Reload', function(event, data) {
-                    var params = angular.extend({}, data, $list.$sort, $list.$pagination.data);
+                    _loadModel(data);
                 });
 
                 _loadModel();
