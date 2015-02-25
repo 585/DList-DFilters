@@ -1,20 +1,24 @@
-<form role="form" class="row">
+<form role="form" class="row d-filters">
     <div ng-repeat="field in $filters.$fields()" ng-switch="field.type">
-        <div class="form-group col-xs-{{field.size}}" ng-switch-when="text">
+        <div ng-switch-when="text" class="form-group col-xs-{{field.size}} d-filters__text-field">
             <label for="{{field.ngModel}}">{{field.label}}</label>
             <input type="text" name="{{field.ngModel}}" class="form-control" ng-model="$filters.$model[field.ngModel]"
                 ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0} }" />
         </div>
-        <div class="form-group col-xs-{{field.size}}" ng-switch-when="select">
+        <div ng-switch-when="select" class="form-group col-xs-{{field.size}} d-filters__select-box">
             <label for="{{field.ngModel}}">{{field.label}}</label>
             <select name="{{field.ngModel}}" class="form-control" ng-model="$filters.$model[field.ngModel]" ng-options="option.key as option.value for option in field.ngOptions">
             </select>
         </div>
-        <div class="checkbox col-xs-{{field.size}}" ng-switch-when="checkbox">
+        <div ng-switch-when="checkbox" class="checkbox col-xs-{{field.size}} d-filters__checkbox">
             <label>
                 <input type="checkbox" ng-model="$filters.$model[field.ngModel]"/>{{field.label}}
             </label>
         </div>
+        <div ng-switch-when="selectize" class="col-xs-{{field.size}} d-filters__selectize">
+            <label for="{{field.ngModel}}">{{field.label}}</label>
+            <selectize ng-model="$filters.$model[field.ngModel]" config="field.config"></selectize>
+        </div>
     </div>
-    <button ng-if="!$filters.autoSubmit" class="btn btn-primary" ng-click="$filters.submit()">Submit</button>
+    <button ng-if="!$filters.autoSubmit" class="btn btn-primary d-filters__submit" ng-click="$filters.submit()">Submit</button>
 </form>
