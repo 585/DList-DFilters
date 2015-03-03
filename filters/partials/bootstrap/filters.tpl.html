@@ -1,23 +1,27 @@
 <form role="form" class="row d-filters">
     <div ng-repeat="field in $filters.$fields()" ng-switch="field.type">
-        <div ng-switch-when="text" class="form-group col-xs-{{field.size}} d-filters__text-field">
+        <div ng-switch-when="text" class="form-group col-xs-{{field.size[0]}} col-sm-{{field.size[1]}} col-md-{{field.size[2]}} col-lg-{{field.size[3]}} d-filters__text-field">
             <label for="{{field.ngModel}}">{{field.label}}</label>
             <input type="text" name="{{field.ngModel}}" class="form-control" ng-model="$filters.$model[field.ngModel]"
                 ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0} }" />
         </div>
-        <div ng-switch-when="select" class="form-group col-xs-{{field.size}} d-filters__select-box">
+        <div ng-switch-when="select" class="form-group col-xs-{{field.size[0]}} col-sm-{{field.size[1]}} col-md-{{field.size[2]}} col-lg-{{field.size[3]}} d-filters__select-box">
             <label for="{{field.ngModel}}">{{field.label}}</label>
             <select name="{{field.ngModel}}" class="form-control" ng-model="$filters.$model[field.ngModel]" ng-options="option.key as option.value for option in field.ngOptions">
             </select>
         </div>
-        <div ng-switch-when="checkbox" class="checkbox col-xs-{{field.size}} d-filters__checkbox">
+        <div ng-switch-when="checkbox" class="checkbox col-xs-{{field.size[0]}} col-sm-{{field.size[1]}} col-md-{{field.size[2]}} col-lg-{{field.size[3]}} d-filters__checkbox">
             <label>
                 <input type="checkbox" ng-model="$filters.$model[field.ngModel]"/>{{field.label}}
             </label>
         </div>
-        <div ng-switch-when="selectize" class="col-xs-{{field.size}} d-filters__selectize">
+        <div ng-switch-when="selectize" class="col-xs-{{field.size[0]}} col-sm-{{field.size[1]}} col-md-{{field.size[2]}} col-lg-{{field.size[3]}} d-filters__selectize">
             <label for="{{field.ngModel}}">{{field.label}}</label>
             <selectize ng-model="$filters.$model[field.ngModel]" config="field.config"></selectize>
+        </div>
+        <div ng-switch-when="datePicker" class="col-xs-{{field.size[0]}} col-sm-{{field.size[1]}} col-md-{{field.size[2]}} col-lg-{{field.size[3]}} d-filters__date-picker">
+            <label for="{{field.ngModel}}">{{field.label}}</label>
+            <input type="text" class="form-control" model="$filters.$model[field.ngModel]" date-picker editable/>
         </div>
     </div>
     <button ng-if="!$filters.autoSubmit" class="btn btn-primary d-filters__submit" ng-click="$filters.submit()">Submit</button>

@@ -2,16 +2,14 @@
     angular.module('d.Filters')
     .directive('dFilters', filtersDirective);
 
-    filtersDirective.$inject = ['$rootScope'];
-
-    function filtersDirective($rootScope) {
+    function filtersDirective() {
         return {
             templateUrl: 'filters.tpl.html',
             replace: true,
             bindToController: true,
             scope: {
                 listName: '@',
-                setup: '&',
+                $setup: '&setup',
                 $fields: '&fields',
                 autoSubmit: '@'
             },
@@ -22,6 +20,7 @@
         function listController($scope) {
             var $filters = this;
             $filters.$model = {};
+
             $filters.submit = submit;
 
             if ($filters.autoSubmit) {
@@ -29,8 +28,9 @@
             }
 
             function submit() {
-                console.log($filters.$model);
-                $rootScope.$broadcast($filters.listName + 'Reload', $filters.$model);
+                if ($filters.$setup() && $filters.$setup().filters && $filters.$setup().filters.onChange) {
+                    $filters.$setup().filters.onChange($filters.$model);
+                }
             }
         }
     }
