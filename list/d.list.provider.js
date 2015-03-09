@@ -19,7 +19,8 @@
                 },
                 pagination: {
                     pageSize: 10,
-                    page: 1
+                    page: 1,
+                    pageSizeOptions: [10, 15, 20, 50]
                 }
             },
             i18n: {
@@ -38,29 +39,7 @@
                 onError: function(response) {
                     return response;
                 }
-            },
-            // templates: {
-            //     name: '<div>This is a custom template for <b>{{$item.value}}</b></div>'
-            // },
-            // edit: {
-            //     name: {
-            //         type: 'select',
-            //         data: ['Olivia', 'Alex', 'Susanne', 'Winston']
-            //     },
-            //     surname: {
-            //         type: 'select',
-            //         dataUrl: 'http://api.icndb.com/jokes/random/1'
-            //     }
-            // },
-            // columns: {
-            //     include: ['name', 'surname', 'age'],
-            //     exclude: ['age'],
-            //     order: [],
-            //     sortables: ['surname'],
-            //     labels: {
-            //         name: 'Name own label'
-            //     }
-            // }
+            }
         }
 
         this.$get = $get;

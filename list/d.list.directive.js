@@ -39,8 +39,8 @@
                 data: {
                     pageSize: $list.$setup.defaults.pagination.pageSize,
                     page: $list.$setup.defaults.pagination.page,
+                    pageSizeOptions: $list.$setup.defaults.pagination.pageSizeOptions,
                     total: null
-
                 },
                 pageUp: function pageUp() {
                     if (this.data.page === this.totalPages()) {
@@ -80,6 +80,11 @@
                     } else {
                         return this.data.page * this.data.pageSize;
                     }
+                },
+                setPageSize: function setPageSize(size) {
+                    this.data.pageSize = size;
+                    this.data.page = 1;
+                    _loadModel();
                 }
             };
 

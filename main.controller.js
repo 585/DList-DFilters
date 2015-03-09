@@ -24,7 +24,8 @@
                 },
                 pagination: {
                     pageSize: 2,
-                    page: 1
+                    page: 1,
+                    pageSizeOptions: [2, 5, 10]
                 }
             },
             templates: {

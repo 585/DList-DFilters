@@ -76,19 +76,16 @@
                 class="input-group-addon btn btn-default d-list-pagination__next"></span>
         </div>
         <div class="d-list-pagination-summary">
-            <div class="d-list-pagination-summary__items-number-select">
-                <ul>
-                    <li>
-                        
-                    </li>
-                    <li>
-
-                    </li>
-                </ul>
-            </div>
             <div class="d-list-pagination-summary__items-number">Showing items: {{$list.$pagination.fromItem()}} - {{$list.$pagination.toItem()}} of {{$list.$pagination.data.total}}</div>
             <div class="d-list-pagination-summary__selected">Selected: {{$list.selected()}}</div>
             <div class="d-list-pagination-summary__total-pages">Total pages: {{$list.$pagination.totalPages()}}</div>
+            <br/>
+            <div ng-if="$list.$pagination.data.pageSizeOptions" class="d-list-pagination-summary__items-number-select btn-group">
+                <button ng-repeat="pageSizeOption in $list.$pagination.data.pageSizeOptions"
+                    ng-class="{active: pageSizeOption === $list.$pagination.data.pageSize}"
+                    ng-click="$list.$pagination.setPageSize(pageSizeOption)"
+                    type="button" class="btn btn-default">{{pageSizeOption}}</button>
+            </div>
         </div>
     </section>
 </div>
