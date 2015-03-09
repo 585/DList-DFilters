@@ -25,11 +25,11 @@ gulp.task('js-fef', function(){
 gulp.task('min', function() {
     return gulp.src(['app.js', 'templates.js', 'utils/*.js', 'actions/*.js', 'filters/*.js', 'list/*.js'])
     .pipe(concat('dList.js'))
+    .pipe(rename('d-list.min.js'))
     .pipe(ngAnnotate({
         add: true,
         single_quotes: true
     }))
-    .pipe(rename('d-list.min.js'))
     .pipe(uglify())
     .pipe(gulp.dest('dist'));
 });
