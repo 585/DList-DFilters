@@ -76,6 +76,16 @@
                 class="input-group-addon btn btn-default d-list-pagination__next"></span>
         </div>
         <div class="d-list-pagination-summary">
+            <div class="d-list-pagination-summary__items-number-select">
+                <ul>
+                    <li>
+                        
+                    </li>
+                    <li>
+
+                    </li>
+                </ul>
+            </div>
             <div class="d-list-pagination-summary__items-number">Showing items: {{$list.$pagination.fromItem()}} - {{$list.$pagination.toItem()}} of {{$list.$pagination.data.total}}</div>
             <div class="d-list-pagination-summary__selected">Selected: {{$list.selected()}}</div>
             <div class="d-list-pagination-summary__total-pages">Total pages: {{$list.$pagination.totalPages()}}</div>

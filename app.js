@@ -3,5 +3,5 @@
     angular.module('d.Actions', []);
     angular.module('d.List', []);
     angular.module('d.Keyboard', []);
-    angular.module('d', ['d.Filters', 'd.Actions', 'd.List', 'd.Keyboard', 'ngSanitize', 'bsDropDown']);
+    angular.module('d.Helpers', []);
 })();

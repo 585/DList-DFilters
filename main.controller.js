@@ -1,5 +1,5 @@
 (function() {
-    angular.module('d')
+    angular.module('d', ['d.Filters', 'd.Actions', 'd.List', 'd.Keyboard', 'd.Helpers', 'ngSanitize', 'bsDropDown'])
         .controller('MainController', mainController);
 
     mainController.$inject = [];
@@ -25,23 +25,6 @@
                 pagination: {
                     pageSize: 2,
                     page: 1
-                }
-            },
-            i18n: {
-                locale: 'en_US',
-                pagination: {
-                    next: 'Next',
-                    prev: 'Previous',
-                    start: 'Start',
-                    end: 'End'
-                }
-            },
-            data: {
-                onSuccess: function(response) {
-                    return response.value;
-                },
-                onError: function(response) {
-                    return response;
                 }
             },
             templates: {

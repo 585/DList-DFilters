@@ -22,7 +22,6 @@
         }
 
         function getData(successCallback, errorCallback, params) {
-            console.log(params);
             return $http.get(_url, {
                             method: 'GET',
                             params: params

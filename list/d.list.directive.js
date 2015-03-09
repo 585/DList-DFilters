@@ -2,9 +2,9 @@
     angular.module('d.List')
     .directive('dList', listDirective);
 
-    listDirective.$inject = ['$http', '$filter', '$compile', 'dListService', 'dCheckboxesService'];
+    listDirective.$inject = ['$http', '$filter', '$compile', 'dListService', 'dCheckboxesService', 'dListSetup'];
 
-    function listDirective($http, $filter, $compile, dListService, dCheckboxesService) {
+    function listDirective($http, $filter, $compile, dListService, dCheckboxesService, dListSetup) {
         return {
             templateUrl: 'list.tpl.html',
             replace: true,
@@ -30,44 +30,7 @@
             $list.selected = selected;
             $list.$edit = false;
             $list.sortBy = sortBy;
-
-            $list.$setup = $scope.setup() || {
-                enable: {
-                    header: true,
-                    footer: true,
-                    sorting: true,
-                    pagination: true,
-                    filters: true,
-                    checkboxes: true
-                },
-                defaults: {
-                    sort: {
-                        order: 'asc',
-                        by: 'name'
-                    },
-                    pagination: {
-                        pageSize: 10,
-                        page: 1
-                    }
-                },
-                i18n: {
-                    locale: 'en_US',
-                    pagination: {
-                        next: 'Next',
-                        prev: 'Previous',
-                        start: 'Start',
-                        end: 'End'
-                    }
-                },
-                data: {
-                    onSuccess: function(response) {
-                        return response.value;
-                    },
-                    onError: function(response) {
-                        return response;
-                    }
-                }
-            };
+            $list.$setup = angular.extend({}, dListSetup.getSetup(), $scope.setup() ? $scope.setup() : {});
 
             $list.$headerLabels = $list.$setup.columns && $list.$setup.columns.labels ? $list.$setup.columns.labels : {};
             $list.$sort = $list.$setup && $list.$setup.defaults ? $list.$setup.defaults.sort : {};

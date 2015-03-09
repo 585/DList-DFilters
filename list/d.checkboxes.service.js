@@ -1,5 +1,5 @@
 (function() {
-    angular.module('d')
+    angular.module('d.Helpers')
     .service('dCheckboxesService', checkboxesService);
 
     function checkboxesService() {
