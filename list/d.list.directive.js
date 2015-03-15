@@ -2,9 +2,9 @@
     angular.module('d.List')
     .directive('dList', listDirective);
 
-    listDirective.$inject = ['$http', '$filter', '$compile', 'dListService', 'dCheckboxesService', 'dListSetup'];
+    listDirective.$inject = ['$http', '$rootScope', '$filter', '$compile', 'dListService', 'dCheckboxesService', 'dListSetup'];
 
-    function listDirective($http, $filter, $compile, dListService, dCheckboxesService, dListSetup) {
+    function listDirective($http, $rootScope, $filter, $compile, dListService, dCheckboxesService, dListSetup) {
         return {
             templateUrl: 'list.tpl.html',
             replace: true,
@@ -14,7 +14,8 @@
                 setup: '&',
                 url: '&',
                 name: '@',
-                responsiveMode: '=responsive'
+                responsiveMode: '=responsive',
+                filterBound: '@'
             },
             controller: listController,
             controllerAs: '$list'
@@ -47,14 +48,14 @@
                         return;
                     }
                     this.data.page++;
-                    _loadModel();
+                    _broadcastPageAndSortData();
                 },
                 pageDown: function pageDown() {
                     if (this.data.page === 1) {
                         return;
                     }
                     this.data.page--;
-                    _loadModel();
+                    _broadcastPageAndSortData();
                 },
                 ensureValidPage: function ensureValidPage() {
                     if (this.data.page < 1) {
@@ -62,16 +63,17 @@
                     } else if (this.data.page > this.totalPages()) {
                         this.data.page = this.totalPages();
                     }
-                    _loadModel();
+                    _broadcastPageAndSortData();
                 },
                 totalPages: function totalPages() {
-                    return Math.round(this.data.total / this.data.pageSize);
+                    var total = Math.round(this.data.total / this.data.pageSize);
+                    return total === 0 ? 1 : total;
                 },
                 fromItem: function fromItem() {
                     if ((this.data.page - 1) * this.data.pageSize === 0) {
                         return 1;
                     } else {
-                        return (this.data.page - 1) * this.data.pageSize;
+                        return ((this.data.page - 1) * this.data.pageSize) + 1;
                     }
                 },
                 toItem: function toItem() {
@@ -84,12 +86,21 @@
                 setPageSize: function setPageSize(size) {
                     this.data.pageSize = size;
                     this.data.page = 1;
-                    _loadModel();
+                    _broadcastPageAndSortData();
                 }
             };
 
             $list.headerIsSortable = headerIsSortable;
             $list.getHeaderLabel = getHeaderLabel;
+
+            // INIT
+            (function() {
+                if ($scope.filterBound) {
+                    _broadcastPageAndSortData();
+                } else {
+                    _loadModel();
+                }
+            })();
 
             /**
              * Checks wheter a provided header key should be sortable or not
@@ -153,18 +164,32 @@
             }
 
             function _loadModel(data) {
+                // If data is extracted from remote url
                 if ($scope.url()) {
                     var postData = angular.extend({}, data, $list.$sort, $list.$pagination.data);
-                    dListService.getData($list.$setup.data.onSuccess, $list.$setup.data.onError, postData).then(function(response) {
-                        _elements = $filter('orderBy')(response, $list.$sort.by, $list.$sort.order === 'desc');
-                        _addElementsCheckboxes();
-                        $list.$pagination.data.total = _elements.length;
-                        _fillModel();
-                    });
+                    dListService.getData($list.$setup.data.onSuccess, $list.$setup.data.onError, postData)
+                    .then(
+                        function success(response) {
+                            _elements = $filter('orderBy')(response, $list.$sort.by, $list.$sort.order === 'desc');
+                            _addElementsCheckboxes();
+                            $list.$pagination.data.total = _elements.length;
+                            _fillModel();
+                        },
+                        function error(error) {
+                            console.log('The remote data for the table couldn\'t be retrieved');
+                        }
+                    );
+                // If the data is provided as an array variable
                 } else {
-                    _elements = $filter('orderBy')($scope.elements(), $list.$sort.by, $list.$sort.order === 'desc');
+                    if (data) {
+                        _elements = data.rows ? data.rows : data;
+                        $list.$pagination.data.total = data.count ? data.count : _elements.length;
+                    } else {
+                        _elements = $scope.elements();
+                        $list.$pagination.data.total = _elements.length;
+                    }
+
                     _addElementsCheckboxes();
-                    $list.$pagination.data.total = _elements.length;
                     _fillModel();
                 }
             }
@@ -176,36 +201,44 @@
             }
 
             function _fillModel() {
-                $list.$elements = _elements.slice(
-                    (($list.$pagination.data.page - 1) * $list.$pagination.data.pageSize),
-                    $list.$pagination.data.pageSize * $list.$pagination.data.page);
+                if ($scope.url()) {
+                    $list.$elements = _elements.slice(
+                        (($list.$pagination.data.page - 1) * $list.$pagination.data.pageSize),
+                        $list.$pagination.data.pageSize * $list.$pagination.data.page);
+                } else {
+                    $list.$elements = _elements;
                 }
+            }
 
-                function sortBy(key) {
-                    $list.$sort.by = key;
-                    if ($list.$sort.order) {
-                        $list.$sort.order = $list.$sort.order === 'asc' ? 'desc' : 'asc';
-                    } else {
-                        $list.$sort.order = 'asc';
-                    }
-                    $list.$sort.order = $list.$sort.order;
-                    _loadModel();
+            function sortBy(key) {
+                $list.$sort.by = key;
+                if ($list.$sort.order) {
+                    $list.$sort.order = $list.$sort.order === 'asc' ? 'desc' : 'asc';
+                } else {
+                    $list.$sort.order = 'asc';
                 }
+                $list.$sort.order = $list.$sort.order;
+                _broadcastPageAndSortData();
+            }
 
-                $scope.$watch(angular.bind($list, function() {
-                    return $list.$elements;
-                }), function(n, o) {
-                    if (n && n[0]) {
-                        $list.$headers = _getHeaders(n[0]);
-                    }
+            $scope.$watch(angular.bind($list, function() {
+                return $list.$elements;
+            }), function(n, o) {
+                if (n && n[0]) {
+                    $list.$headers = _getHeaders(n[0]);
+                }
+            });
+
+            $scope.$on($list.$name + 'Reload', function(event, data) {
+                _loadModel(data);
+            });
+
+            function _broadcastPageAndSortData() {
+                $rootScope.$broadcast($list.$name + 'SetPageAndSort', {
+                    sort: $list.$sort,
+                    pagination: $list.$pagination.data
                 });
-
-                $scope.$on($list.$name + 'Reload', function(event, data) {
-                    _loadModel(data);
-                });
-
-                _loadModel();
-
             }
         }
-    })();
+    }
+})();

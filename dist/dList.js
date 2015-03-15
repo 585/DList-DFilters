@@ -15,7 +15,7 @@ $templateCache.put("action.select-none.tpl.html","<li>\n    <a href=\"\" ng-clic
 $templateCache.put("filters.tpl.html","<form role=\"form\" class=\"row d-filters\">\n    <div ng-repeat=\"field in $filters.$fields()\" ng-switch=\"field.type\">\n        <div ng-switch-when=\"text\" class=\"form-group col-xs-{{field.size[0]}} col-sm-{{field.size[1]}} col-md-{{field.size[2]}} col-lg-{{field.size[3]}} d-filters__text-field\">\n            <label for=\"{{field.ngModel}}\">{{field.label}}</label>\n            <input type=\"text\" name=\"{{field.ngModel}}\" class=\"form-control\" ng-model=\"$filters.$model[field.ngModel]\"\n                ng-model-options=\"{ updateOn: \'default blur\', debounce: {\'default\': 500, \'blur\': 0} }\" />\n        </div>\n        <div ng-switch-when=\"select\" class=\"form-group col-xs-{{field.size[0]}} col-sm-{{field.size[1]}} col-md-{{field.size[2]}} col-lg-{{field.size[3]}} d-filters__select-box\">\n            <label for=\"{{field.ngModel}}\">{{field.label}}</label>\n            <select name=\"{{field.ngModel}}\" class=\"form-control\" ng-model=\"$filters.$model[field.ngModel]\" ng-options=\"option.key as option.value for option in field.ngOptions\">\n            </select>\n        </div>\n        <div ng-switch-when=\"checkbox\" class=\"checkbox col-xs-{{field.size[0]}} col-sm-{{field.size[1]}} col-md-{{field.size[2]}} col-lg-{{field.size[3]}} d-filters__checkbox\">\n            <label>\n                <input type=\"checkbox\" ng-model=\"$filters.$model[field.ngModel]\"/>{{field.label}}\n            </label>\n        </div>\n        <div ng-switch-when=\"selectize\" class=\"col-xs-{{field.size[0]}} col-sm-{{field.size[1]}} col-md-{{field.size[2]}} col-lg-{{field.size[3]}} d-filters__selectize\">\n            <label for=\"{{field.ngModel}}\">{{field.label}}</label>\n            <selectize ng-model=\"$filters.$model[field.ngModel]\" config=\"field.config\"></selectize>\n        </div>\n        <div ng-switch-when=\"datePicker\" class=\"col-xs-{{field.size[0]}} col-sm-{{field.size[1]}} col-md-{{field.size[2]}} col-lg-{{field.size[3]}} d-filters__date-picker\">\n            <label for=\"{{field.ngModel}}\">{{field.label}}</label>\n            <input type=\"text\" class=\"form-control\" model=\"$filters.$model[field.ngModel]\" date-picker editable/>\n        </div>\n    </div>\n    <button ng-if=\"!$filters.autoSubmit\" class=\"btn btn-primary d-filters__submit\" ng-click=\"$filters.submit()\">Submit</button>\n</form>\n");
 $templateCache.put("edit-input.tpl.html","<div class=\"form-group\">\n    <select ng-if=\"vm.setup.type === \'select\'\" ng-model=\"vm.editValue\" ng-options=\"option for option in vm.selectDataOptions\" class=\"form-control\">\n    </select>\n    <input ng-if=\"vm.setup.type !== \'select\'\" type=\"text\" class=\"form-control\" ng-model=\"vm.editValue\">\n</div>");
 $templateCache.put("edit-mode-button.tpl.html","<span class=\"pull-right\">\n    <button class=\"btn btn-{{size}} btn-primary\" ng-if=\"!$parent.$list.$edit\" type=\"button\" ng-click=\"vm.changeEditMode()\">\n        <span class=\"glyphicon glyphicon-edit\" aria-hidden=\"true\"></span> \n        <span>Edit</span>\n    </button>\n    \n    <button class=\"btn btn-{{size}} btn-success\" ng-if=\"$parent.$list.$edit\" type=\"button\" ng-click=\"vm.saveEditData()\">\n        <span class=\"glyphicon glyphicon-floppy-saved\" aria-hidden=\"true\"></span> \n        <span>Save</span>\n    </button>\n    \n    <button class=\"btn btn-{{size}} btn-default\" ng-if=\"$parent.$list.$edit\" type=\"button\" ng-click=\"vm.cancelEditData()\">\n        <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span> \n        <span>Cancel</span>\n    </button>\n</span>");
-$templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclude class=\"d-list__multi-actions\"></div>\n    <table ng-if=\"!responsiveMode\" class=\"d-list-table\">\n        <thead class=\"d-list-table__headers\" ng-if=\"$list.$setup.enable.header\">\n            <tr>\n                <th class=\"d-list-table__header\" ng-if=\"$list.$setup.enable.checkboxes\"></th>\n                <th class=\"d-list-table__header\" ng-repeat=\"header in $list.$headers\">\n                    <a href=\"\" ng-if=\"$list.headerIsSortable(header)\" ng-click=\"$list.sortBy(header)\" class=\"d-list-table__header-sortable\">\n                        {{$list.getHeaderLabel(header) | capitalize}}\n                        <i ng-if=\"$list.$sort.by === header\" class=\"glyphicon\" ng-class=\"{\'glyphicon-chevron-down\': $list.$sort.order === \'desc\', \'glyphicon-chevron-up\': $list.$sort.order === \'asc\'}\" style=\"font-size: 10px; margin: 4px 0 0 4px\"></i>\n                    </a>\n                    <span ng-if=\"!$list.headerIsSortable(header)\">\n                        {{$list.getHeaderLabel(header) | capitalize}}\n                    </span>\n                </th>\n            </tr>\n        </thead>\n        <tfoot class=\"d-list-table__footer\" ng-if=\"$list.$setup.enable.footer\">\n        </tfoot>\n        <tbody class=\"d-list-table__body\">\n            <tr ng-repeat=\"element in $list.$elements\" class=\"d-list-table__body-row\">\n                <td ng-if=\"$list.$setup.enable.checkboxes\" class=\"d-list-table__body-cell d-list-table__body-cell-checkbox\">\n                    <input type=\"checkbox\" ng-model=\"element.$checked\" />\n                </td>\n                <td ng-hide=\"$list.$edit\" ng-repeat=\"header in $list.$headers\" class=\"d-list-table__body-cell\">\n                    <div ng-if=\"!$list.$setup.templates[header]\">{{element[header]}}</div>\n                    <div ng-if=\"$list.$setup.templates[header]\">\n                        <item data-template=\"$list.$setup.templates[header]\" data-model=\"element[header]\"></item>\n                    </div>\n                </td>\n                <td ng-show=\"$list.$edit\" ng-repeat=\"header in $list.$headers\" class=\"d-list-table__body-cell--edit\">\n                    <div class=\"form-group\">\n                        <edit-input data-value=\"element[header]\" data-setup=\"$list.$setup.edit[header]\"></edit-input>\n                    </div>\n                </td>\n            </tr>\n        </tbody>\n    </table>\n\n    <table ng-if=\"responsiveMode\" class=\"d-list-table-small\" ng-repeat=\"element in $list.$elements\">\n        <tbody>\n            <tr ng-repeat=\"header in $list.$headers\" class=\"d-list-table-small__row\">\n                <td class=\"d-list-table-small__header\">\n                    <a href=\"\" ng-if=\"$list.headerIsSortable(header)\" ng-click=\"$list.sortBy(header)\" class=\"d-list-table-small__header-sortable\">\n                        {{$list.getHeaderLabel(header) | capitalize}}\n                        <i ng-if=\"$list.$sort.by === header\" class=\"glyphicon\" ng-class=\"{\'glyphicon-chevron-down\': $list.$sort.order === \'desc\', \'glyphicon-chevron-up\': $list.$sort.order === \'asc\'}\" style=\"font-size: 10px; margin: 4px 0 0 4px\"></i>\n                    </a>\n                    <span ng-if=\"!$list.headerIsSortable(header)\">\n                        {{$list.getHeaderLabel(header) | capitalize}}\n                    </span>\n                </td>\n                <td ng-hide=\"$list.$edit\" class=\"d-list-table-small__body-cell\">\n                    <div ng-if=\"!$list.$setup.templates[header]\">{{element[header]}}</div>\n                    <div ng-if=\"$list.$setup.templates[header]\">\n                        <item data-template=\"$list.$setup.templates[header]\" data-model=\"element[header]\"></item>\n                    </div>\n                </td>\n\n                <td ng-show=\"$list.$edit\" class=\"d-list-table-small__body-cell--edit\">\n                    <div class=\"form-group\">\n                        <edit-input data-value=\"element[header]\" data-setup=\"$list.$setup.edit[header]\"></edit-input>\n                    </div>\n                </td>\n            </tr>\n        </tbody>\n    </table>\n\n    <section ng-if=\"$list.$setup.enable.pagination\" class=\"d-list-pagination\">\n        <div class=\"input-group d-list-pagination__page-links\">\n            <span ng-bind=\"$list.$setup.i18n.pagination.prev\" ng-click=\"$list.$pagination.pageDown()\"\n                ng-disabled=\"$list.$pagination.data.page === 1\" class=\"input-group-addon btn btn-default d-list-pagination__prev\"></span>\n            <input type=\"text\" class=\"form-control\" ng-blur=\"$list.$pagination.ensureValidPage()\"\n                ng-model=\"$list.$pagination.data.page\" class=\"d-list-pagination__number\"/>\n            <span ng-bind=\"$list.$setup.i18n.pagination.next\" ng-click=\"$list.$pagination.pageUp()\"\n                ng-disabled=\"$list.$pagination.data.page === $list.$pagination.totalPages()\"\n                class=\"input-group-addon btn btn-default d-list-pagination__next\"></span>\n        </div>\n        <div class=\"d-list-pagination-summary\">\n            <div class=\"d-list-pagination-summary__items-number\">Showing items: {{$list.$pagination.fromItem()}} - {{$list.$pagination.toItem()}} of {{$list.$pagination.data.total}}</div>\n            <div class=\"d-list-pagination-summary__selected\">Selected: {{$list.selected()}}</div>\n            <div class=\"d-list-pagination-summary__total-pages\">Total pages: {{$list.$pagination.totalPages()}}</div>\n            <br/>\n            <div ng-if=\"$list.$pagination.data.pageSizeOptions\" class=\"d-list-pagination-summary__items-number-select btn-group\">\n                <button ng-repeat=\"pageSizeOption in $list.$pagination.data.pageSizeOptions\"\n                    ng-class=\"{active: pageSizeOption === $list.$pagination.data.pageSize}\"\n                    ng-click=\"$list.$pagination.setPageSize(pageSizeOption)\"\n                    type=\"button\" class=\"btn btn-default\">{{pageSizeOption}}</button>\n            </div>\n        </div>\n    </section>\n</div>\n");}]);
+$templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclude class=\"d-list__multi-actions\"></div>\n    <table ng-if=\"!responsiveMode\" class=\"d-list-table\">\n        <thead class=\"d-list-table__headers\" ng-if=\"$list.$setup.enable.header\">\n            <tr>\n                <th class=\"d-list-table__header\" ng-if=\"$list.$setup.enable.checkboxes\"></th>\n                <th class=\"d-list-table__header\" ng-repeat=\"header in $list.$headers\">\n                    <a href=\"\" ng-if=\"$list.headerIsSortable(header)\" ng-click=\"$list.sortBy(header)\" class=\"d-list-table__header-sortable\">\n                        {{$list.getHeaderLabel(header) | capitalize}}\n                        <i ng-if=\"$list.$sort.by === header\" class=\"glyphicon\" ng-class=\"{\'glyphicon-chevron-down\': $list.$sort.order === \'desc\', \'glyphicon-chevron-up\': $list.$sort.order === \'asc\'}\" style=\"font-size: 10px; margin: 4px 0 0 4px\"></i>\n                    </a>\n                    <span ng-if=\"!$list.headerIsSortable(header)\">\n                        {{$list.getHeaderLabel(header) | capitalize}}\n                    </span>\n                </th>\n            </tr>\n        </thead>\n        <tfoot class=\"d-list-table__footer\" ng-if=\"$list.$setup.enable.footer\">\n        </tfoot>\n        <tbody class=\"d-list-table__body\">\n            <tr ng-repeat=\"element in $list.$elements\" class=\"d-list-table__body-row\">\n                <td ng-if=\"$list.$setup.enable.checkboxes\" class=\"d-list-table__body-cell d-list-table__body-cell-checkbox\">\n                    <input type=\"checkbox\" ng-model=\"element.$checked\" />\n                </td>\n                <td ng-hide=\"$list.$edit\" ng-repeat=\"header in $list.$headers\" class=\"d-list-table__body-cell\">\n                    <div ng-if=\"!$list.$setup.templates[header]\">{{element[header]}}</div>\n                    <div ng-if=\"$list.$setup.templates[header]\">\n                        <item data-template=\"$list.$setup.templates[header]\" data-model=\"element[header]\" data-row-model=\"element\"></item>\n                    </div>\n                </td>\n                <td ng-show=\"$list.$edit\" ng-repeat=\"header in $list.$headers\" class=\"d-list-table__body-cell--edit\">\n                    <div class=\"form-group\">\n                        <edit-input data-value=\"element[header]\" data-setup=\"$list.$setup.edit[header]\"></edit-input>\n                    </div>\n                </td>\n            </tr>\n        </tbody>\n    </table>\n\n    <table ng-if=\"responsiveMode\" class=\"d-list-table-small\" ng-repeat=\"element in $list.$elements\">\n        <tbody>\n            <tr ng-repeat=\"header in $list.$headers\" class=\"d-list-table-small__row\">\n                <td class=\"d-list-table-small__header\">\n                    <a href=\"\" ng-if=\"$list.headerIsSortable(header)\" ng-click=\"$list.sortBy(header)\" class=\"d-list-table-small__header-sortable\">\n                        {{$list.getHeaderLabel(header) | capitalize}}\n                        <i ng-if=\"$list.$sort.by === header\" class=\"glyphicon\" ng-class=\"{\'glyphicon-chevron-down\': $list.$sort.order === \'desc\', \'glyphicon-chevron-up\': $list.$sort.order === \'asc\'}\" style=\"font-size: 10px; margin: 4px 0 0 4px\"></i>\n                    </a>\n                    <span ng-if=\"!$list.headerIsSortable(header)\">\n                        {{$list.getHeaderLabel(header) | capitalize}}\n                    </span>\n                </td>\n                <td ng-hide=\"$list.$edit\" class=\"d-list-table-small__body-cell\">\n                    <div ng-if=\"!$list.$setup.templates[header]\">{{element[header]}}</div>\n                    <div ng-if=\"$list.$setup.templates[header]\">\n                        <item data-template=\"$list.$setup.templates[header]\" data-model=\"element[header]\" data-row-model=\"element\"></item>\n                    </div>\n                </td>\n\n                <td ng-show=\"$list.$edit\" class=\"d-list-table-small__body-cell--edit\">\n                    <div class=\"form-group\">\n                        <edit-input data-value=\"element[header]\" data-setup=\"$list.$setup.edit[header]\"></edit-input>\n                    </div>\n                </td>\n            </tr>\n        </tbody>\n    </table>\n\n    <section ng-if=\"$list.$setup.enable.pagination\" class=\"d-list-pagination\">\n        <div class=\"input-group d-list-pagination__page-links\">\n            <span ng-bind=\"$list.$setup.i18n.pagination.prev\" ng-click=\"$list.$pagination.pageDown()\"\n                ng-disabled=\"$list.$pagination.data.page === 1\" class=\"input-group-addon btn btn-default d-list-pagination__prev\"></span>\n            <input type=\"text\" class=\"form-control\" ng-blur=\"$list.$pagination.ensureValidPage()\"\n                ng-model=\"$list.$pagination.data.page\" class=\"d-list-pagination__number\"/>\n            <span ng-bind=\"$list.$setup.i18n.pagination.next\" ng-click=\"$list.$pagination.pageUp()\"\n                ng-disabled=\"$list.$pagination.data.page === $list.$pagination.totalPages()\"\n                class=\"input-group-addon btn btn-default d-list-pagination__next\"></span>\n        </div>\n        <div class=\"d-list-pagination-summary\">\n            <div class=\"d-list-pagination-summary__items-number\">Showing items: {{$list.$pagination.fromItem()}} - {{$list.$pagination.toItem()}} of {{$list.$pagination.data.total}}</div>\n            <div class=\"d-list-pagination-summary__selected\">Selected: {{$list.selected()}}</div>\n            <div class=\"d-list-pagination-summary__total-pages\">Total pages: {{$list.$pagination.totalPages()}}</div>\n            <br/>\n            <div ng-if=\"$list.$pagination.data.pageSizeOptions\" class=\"d-list-pagination-summary__items-number-select btn-group\">\n                <button ng-repeat=\"pageSizeOption in $list.$pagination.data.pageSizeOptions\"\n                    ng-class=\"{active: pageSizeOption === $list.$pagination.data.pageSize}\"\n                    ng-click=\"$list.$pagination.setPageSize(pageSizeOption)\"\n                    type=\"button\" class=\"btn btn-default\">{{pageSizeOption}}</button>\n            </div>\n        </div>\n    </section>\n</div>\n");}]);
 (function() {
     angular.module('d', ['d.Filters', 'd.Actions', 'd.List', 'd.Keyboard', 'd.Helpers', 'ngSanitize', 'bsDropDown'])
         .controller('MainController', mainController);
@@ -358,18 +358,19 @@ $templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclu
         return {
             templateUrl: 'filters.tpl.html',
             replace: true,
-            bindToController: true,
             scope: {
                 listName: '@',
                 $setup: '&setup',
                 $fields: '&fields',
                 autoSubmit: '@'
             },
+            bindToController: true,
             controller: listController,
             controllerAs: '$filters'
         };
 
         function listController($scope) {
+            var _pageAndSortData = {};
             var $filters = this;
             $filters.$model = {};
 
@@ -381,9 +382,14 @@ $templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclu
 
             function submit() {
                 if ($filters.$setup() && $filters.$setup().filters && $filters.$setup().filters.onChange) {
-                    $filters.$setup().filters.onChange($filters.$model);
+                    $filters.$setup().filters.onChange(angular.extend({}, $filters.$model, _pageAndSortData));
                 }
             }
+
+            $scope.$on($filters.listName + 'SetPageAndSort', function(event, data) {
+                _pageAndSortData = data;
+                submit();
+            });
         }
     }
 })();
@@ -576,11 +582,13 @@ $templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclu
             },
             scope: {
                 template: '&',
-                value: '&model'
+                value: '&model',
+                row: '&rowModel'
             },
             controller: ['$scope', function($scope) {
                 var $item = this;
                 $item.value = $scope.value();
+                $item.row = $scope.row();
             }],
             controllerAs: '$item'
         };
@@ -591,10 +599,10 @@ $templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclu
     angular.module('d.List')
     .directive('dList', listDirective);
 
-    listDirective.$inject = ['$http', '$filter', '$compile', 'dListService', 'dCheckboxesService', 'dListSetup'];
+    listDirective.$inject = ['$http', '$rootScope', '$filter', '$compile', 'dListService', 'dCheckboxesService', 'dListSetup'];
 
-    function listDirective($http, $filter, $compile, dListService, dCheckboxesService, dListSetup) {
-            listController.$inject = ['$scope'];
+    function listDirective($http, $rootScope, $filter, $compile, dListService, dCheckboxesService, dListSetup) {
+        listController.$inject = ['$scope'];
         return {
             templateUrl: 'list.tpl.html',
             replace: true,
@@ -604,7 +612,8 @@ $templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclu
                 setup: '&',
                 url: '&',
                 name: '@',
-                responsiveMode: '=responsive'
+                responsiveMode: '=responsive',
+                filterBound: '@'
             },
             controller: listController,
             controllerAs: '$list'
@@ -637,14 +646,14 @@ $templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclu
                         return;
                     }
                     this.data.page++;
-                    _loadModel();
+                    _broadcastPageAndSortData();
                 },
                 pageDown: function pageDown() {
                     if (this.data.page === 1) {
                         return;
                     }
                     this.data.page--;
-                    _loadModel();
+                    _broadcastPageAndSortData();
                 },
                 ensureValidPage: function ensureValidPage() {
                     if (this.data.page < 1) {
@@ -652,16 +661,17 @@ $templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclu
                     } else if (this.data.page > this.totalPages()) {
                         this.data.page = this.totalPages();
                     }
-                    _loadModel();
+                    _broadcastPageAndSortData();
                 },
                 totalPages: function totalPages() {
-                    return Math.round(this.data.total / this.data.pageSize);
+                    var total = Math.round(this.data.total / this.data.pageSize);
+                    return total === 0 ? 1 : total;
                 },
                 fromItem: function fromItem() {
                     if ((this.data.page - 1) * this.data.pageSize === 0) {
                         return 1;
                     } else {
-                        return (this.data.page - 1) * this.data.pageSize;
+                        return ((this.data.page - 1) * this.data.pageSize) + 1;
                     }
                 },
                 toItem: function toItem() {
@@ -674,12 +684,21 @@ $templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclu
                 setPageSize: function setPageSize(size) {
                     this.data.pageSize = size;
                     this.data.page = 1;
-                    _loadModel();
+                    _broadcastPageAndSortData();
                 }
             };
 
             $list.headerIsSortable = headerIsSortable;
             $list.getHeaderLabel = getHeaderLabel;
+
+            // INIT
+            (function() {
+                if ($scope.filterBound) {
+                    _broadcastPageAndSortData();
+                } else {
+                    _loadModel();
+                }
+            })();
 
             /**
              * Checks wheter a provided header key should be sortable or not
@@ -743,18 +762,32 @@ $templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclu
             }
 
             function _loadModel(data) {
+                // If data is extracted from remote url
                 if ($scope.url()) {
                     var postData = angular.extend({}, data, $list.$sort, $list.$pagination.data);
-                    dListService.getData($list.$setup.data.onSuccess, $list.$setup.data.onError, postData).then(function(response) {
-                        _elements = $filter('orderBy')(response, $list.$sort.by, $list.$sort.order === 'desc');
-                        _addElementsCheckboxes();
-                        $list.$pagination.data.total = _elements.length;
-                        _fillModel();
-                    });
+                    dListService.getData($list.$setup.data.onSuccess, $list.$setup.data.onError, postData)
+                    .then(
+                        function success(response) {
+                            _elements = $filter('orderBy')(response, $list.$sort.by, $list.$sort.order === 'desc');
+                            _addElementsCheckboxes();
+                            $list.$pagination.data.total = _elements.length;
+                            _fillModel();
+                        },
+                        function error(error) {
+                            console.log('The remote data for the table couldn\'t be retrieved');
+                        }
+                    );
+                // If the data is provided as an array variable
                 } else {
-                    _elements = $filter('orderBy')($scope.elements(), $list.$sort.by, $list.$sort.order === 'desc');
+                    if (data) {
+                        _elements = data.rows ? data.rows : data;
+                        $list.$pagination.data.total = data.count ? data.count : _elements.length;
+                    } else {
+                        _elements = $scope.elements();
+                        $list.$pagination.data.total = _elements.length;
+                    }
+
                     _addElementsCheckboxes();
-                    $list.$pagination.data.total = _elements.length;
                     _fillModel();
                 }
             }
@@ -766,39 +799,47 @@ $templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclu
             }
 
             function _fillModel() {
-                $list.$elements = _elements.slice(
-                    (($list.$pagination.data.page - 1) * $list.$pagination.data.pageSize),
-                    $list.$pagination.data.pageSize * $list.$pagination.data.page);
+                if ($scope.url()) {
+                    $list.$elements = _elements.slice(
+                        (($list.$pagination.data.page - 1) * $list.$pagination.data.pageSize),
+                        $list.$pagination.data.pageSize * $list.$pagination.data.page);
+                } else {
+                    $list.$elements = _elements;
                 }
+            }
 
-                function sortBy(key) {
-                    $list.$sort.by = key;
-                    if ($list.$sort.order) {
-                        $list.$sort.order = $list.$sort.order === 'asc' ? 'desc' : 'asc';
-                    } else {
-                        $list.$sort.order = 'asc';
-                    }
-                    $list.$sort.order = $list.$sort.order;
-                    _loadModel();
+            function sortBy(key) {
+                $list.$sort.by = key;
+                if ($list.$sort.order) {
+                    $list.$sort.order = $list.$sort.order === 'asc' ? 'desc' : 'asc';
+                } else {
+                    $list.$sort.order = 'asc';
                 }
+                $list.$sort.order = $list.$sort.order;
+                _broadcastPageAndSortData();
+            }
 
-                $scope.$watch(angular.bind($list, function() {
-                    return $list.$elements;
-                }), function(n, o) {
-                    if (n && n[0]) {
-                        $list.$headers = _getHeaders(n[0]);
-                    }
+            $scope.$watch(angular.bind($list, function() {
+                return $list.$elements;
+            }), function(n, o) {
+                if (n && n[0]) {
+                    $list.$headers = _getHeaders(n[0]);
+                }
+            });
+
+            $scope.$on($list.$name + 'Reload', function(event, data) {
+                _loadModel(data);
+            });
+
+            function _broadcastPageAndSortData() {
+                $rootScope.$broadcast($list.$name + 'SetPageAndSort', {
+                    sort: $list.$sort,
+                    pagination: $list.$pagination.data
                 });
-
-                $scope.$on($list.$name + 'Reload', function(event, data) {
-                    _loadModel(data);
-                });
-
-                _loadModel();
-
             }
         }
-    })();
+    }
+})();
 
 (function() {
     angular.module('d.List')

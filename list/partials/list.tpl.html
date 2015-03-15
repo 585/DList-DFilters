@@ -25,7 +25,7 @@
                 <td ng-hide="$list.$edit" ng-repeat="header in $list.$headers" class="d-list-table__body-cell">
                     <div ng-if="!$list.$setup.templates[header]">{{element[header]}}</div>
                     <div ng-if="$list.$setup.templates[header]">
-                        <item data-template="$list.$setup.templates[header]" data-model="element[header]"></item>
+                        <item data-template="$list.$setup.templates[header]" data-model="element[header]" data-row-model="element"></item>
                     </div>
                 </td>
                 <td ng-show="$list.$edit" ng-repeat="header in $list.$headers" class="d-list-table__body-cell--edit">
@@ -52,7 +52,7 @@
                 <td ng-hide="$list.$edit" class="d-list-table-small__body-cell">
                     <div ng-if="!$list.$setup.templates[header]">{{element[header]}}</div>
                     <div ng-if="$list.$setup.templates[header]">
-                        <item data-template="$list.$setup.templates[header]" data-model="element[header]"></item>
+                        <item data-template="$list.$setup.templates[header]" data-model="element[header]" data-row-model="element"></item>
                     </div>
                 </td>
 

@@ -12,11 +12,13 @@
             },
             scope: {
                 template: '&',
-                value: '&model'
+                value: '&model',
+                row: '&rowModel'
             },
             controller: function($scope) {
                 var $item = this;
                 $item.value = $scope.value();
+                $item.row = $scope.row();
             },
             controllerAs: '$item'
         };

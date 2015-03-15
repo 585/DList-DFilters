@@ -6,18 +6,19 @@
         return {
             templateUrl: 'filters.tpl.html',
             replace: true,
-            bindToController: true,
             scope: {
                 listName: '@',
                 $setup: '&setup',
                 $fields: '&fields',
                 autoSubmit: '@'
             },
+            bindToController: true,
             controller: listController,
             controllerAs: '$filters'
         };
 
         function listController($scope) {
+            var _pageAndSortData = {};
             var $filters = this;
             $filters.$model = {};
 
@@ -29,9 +30,14 @@
 
             function submit() {
                 if ($filters.$setup() && $filters.$setup().filters && $filters.$setup().filters.onChange) {
-                    $filters.$setup().filters.onChange($filters.$model);
+                    $filters.$setup().filters.onChange(angular.extend({}, $filters.$model, _pageAndSortData));
                 }
             }
+
+            $scope.$on($filters.listName + 'SetPageAndSort', function(event, data) {
+                _pageAndSortData = data;
+                submit();
+            });
         }
     }
 })();
