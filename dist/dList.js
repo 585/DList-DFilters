@@ -353,14 +353,15 @@ $templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclu
     angular.module('d.Filters')
     .directive('dFilters', filtersDirective);
 
-    function filtersDirective() {
+    filtersDirective.$inject = ['$rootScope'];
+
+    function filtersDirective($rootScope) {
         listController.$inject = ['$scope'];
         return {
             templateUrl: 'filters.tpl.html',
             replace: true,
             scope: {
                 listName: '@',
-                $setup: '&setup',
                 $fields: '&fields',
                 autoSubmit: '@'
             },
@@ -370,7 +371,6 @@ $templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclu
         };
 
         function listController($scope) {
-            var _pageAndSortData = {};
             var $filters = this;
             $filters.$model = {};
 
@@ -381,15 +381,10 @@ $templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclu
             }
 
             function submit() {
-                if ($filters.$setup() && $filters.$setup().filters && $filters.$setup().filters.onChange) {
-                    $filters.$setup().filters.onChange(angular.extend({}, $filters.$model, _pageAndSortData));
-                }
+                //broadcasts event for list to reload
+                $rootScope.$broadcast($filters.listName + 'Reload', $filters.$model);
             }
 
-            $scope.$on($filters.listName + 'SetPageAndSort', function(event, data) {
-                _pageAndSortData = data;
-                submit();
-            });
         }
     }
 })();
@@ -646,14 +641,14 @@ $templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclu
                         return;
                     }
                     this.data.page++;
-                    _broadcastPageAndSortData();
+                    _submitOnChange();
                 },
                 pageDown: function pageDown() {
                     if (this.data.page === 1) {
                         return;
                     }
                     this.data.page--;
-                    _broadcastPageAndSortData();
+                    _submitOnChange();
                 },
                 ensureValidPage: function ensureValidPage() {
                     if (this.data.page < 1) {
@@ -661,7 +656,7 @@ $templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclu
                     } else if (this.data.page > this.totalPages()) {
                         this.data.page = this.totalPages();
                     }
-                    _broadcastPageAndSortData();
+                    _submitOnChange();
                 },
                 totalPages: function totalPages() {
                     var total = Math.round(this.data.total / this.data.pageSize);
@@ -684,7 +679,7 @@ $templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclu
                 setPageSize: function setPageSize(size) {
                     this.data.pageSize = size;
                     this.data.page = 1;
-                    _broadcastPageAndSortData();
+                    _submitOnChange();
                 }
             };
 
@@ -694,7 +689,7 @@ $templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclu
             // INIT
             (function() {
                 if ($scope.filterBound) {
-                    _broadcastPageAndSortData();
+                    _submitOnChange();
                 } else {
                     _loadModel();
                 }
@@ -761,6 +756,17 @@ $templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclu
                 return total;
             }
 
+            function sortBy(key) {
+                $list.$sort.by = key;
+                if ($list.$sort.order) {
+                    $list.$sort.order = $list.$sort.order === 'asc' ? 'desc' : 'asc';
+                } else {
+                    $list.$sort.order = 'asc';
+                }
+                $list.$sort.order = $list.$sort.order;
+                _submitOnChange();
+            }
+
             function _loadModel(data) {
                 // If data is extracted from remote url
                 if ($scope.url()) {
@@ -808,15 +814,20 @@ $templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclu
                 }
             }
 
-            function sortBy(key) {
-                $list.$sort.by = key;
-                if ($list.$sort.order) {
-                    $list.$sort.order = $list.$sort.order === 'asc' ? 'desc' : 'asc';
-                } else {
-                    $list.$sort.order = 'asc';
+            function _submitOnChange(filtersModel) {
+                if ($list.$setup.filters && $list.$setup.filters.onChange) {
+                    $list.$setup.filters.onChange(angular.extend(
+                        {},
+                        filtersModel ? filtersModel : {},
+                        {
+                            sort: $list.$sort,
+                            pagination: $list.$pagination.data
+                        }
+                    ))
+                    .then(function(response) {
+                        _loadModel(response);
+                    });
                 }
-                $list.$sort.order = $list.$sort.order;
-                _broadcastPageAndSortData();
             }
 
             $scope.$watch(angular.bind($list, function() {
@@ -827,16 +838,9 @@ $templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclu
                 }
             });
 
-            $scope.$on($list.$name + 'Reload', function(event, data) {
-                _loadModel(data);
+            $scope.$on($list.$name + 'Reload', function(event, filtersModel) {
+                _submitOnChange(filtersModel);
             });
-
-            function _broadcastPageAndSortData() {
-                $rootScope.$broadcast($list.$name + 'SetPageAndSort', {
-                    sort: $list.$sort,
-                    pagination: $list.$pagination.data
-                });
-            }
         }
     }
 })();

@@ -48,14 +48,14 @@
                         return;
                     }
                     this.data.page++;
-                    _broadcastPageAndSortData();
+                    _submitOnChange();
                 },
                 pageDown: function pageDown() {
                     if (this.data.page === 1) {
                         return;
                     }
                     this.data.page--;
-                    _broadcastPageAndSortData();
+                    _submitOnChange();
                 },
                 ensureValidPage: function ensureValidPage() {
                     if (this.data.page < 1) {
@@ -63,7 +63,7 @@
                     } else if (this.data.page > this.totalPages()) {
                         this.data.page = this.totalPages();
                     }
-                    _broadcastPageAndSortData();
+                    _submitOnChange();
                 },
                 totalPages: function totalPages() {
                     var total = Math.round(this.data.total / this.data.pageSize);
@@ -86,7 +86,7 @@
                 setPageSize: function setPageSize(size) {
                     this.data.pageSize = size;
                     this.data.page = 1;
-                    _broadcastPageAndSortData();
+                    _submitOnChange();
                 }
             };
 
@@ -96,7 +96,7 @@
             // INIT
             (function() {
                 if ($scope.filterBound) {
-                    _broadcastPageAndSortData();
+                    _submitOnChange();
                 } else {
                     _loadModel();
                 }
@@ -163,6 +163,17 @@
                 return total;
             }
 
+            function sortBy(key) {
+                $list.$sort.by = key;
+                if ($list.$sort.order) {
+                    $list.$sort.order = $list.$sort.order === 'asc' ? 'desc' : 'asc';
+                } else {
+                    $list.$sort.order = 'asc';
+                }
+                $list.$sort.order = $list.$sort.order;
+                _submitOnChange();
+            }
+
             function _loadModel(data) {
                 // If data is extracted from remote url
                 if ($scope.url()) {
@@ -210,15 +221,20 @@
                 }
             }
 
-            function sortBy(key) {
-                $list.$sort.by = key;
-                if ($list.$sort.order) {
-                    $list.$sort.order = $list.$sort.order === 'asc' ? 'desc' : 'asc';
-                } else {
-                    $list.$sort.order = 'asc';
+            function _submitOnChange(filtersModel) {
+                if ($list.$setup.filters && $list.$setup.filters.onChange) {
+                    $list.$setup.filters.onChange(angular.extend(
+                        {},
+                        filtersModel ? filtersModel : {},
+                        {
+                            sort: $list.$sort,
+                            pagination: $list.$pagination.data
+                        }
+                    ))
+                    .then(function(response) {
+                        _loadModel(response);
+                    });
                 }
-                $list.$sort.order = $list.$sort.order;
-                _broadcastPageAndSortData();
             }
 
             $scope.$watch(angular.bind($list, function() {
@@ -229,16 +245,9 @@
                 }
             });
 
-            $scope.$on($list.$name + 'Reload', function(event, data) {
-                _loadModel(data);
+            $scope.$on($list.$name + 'Reload', function(event, filtersModel) {
+                _submitOnChange(filtersModel);
             });
-
-            function _broadcastPageAndSortData() {
-                $rootScope.$broadcast($list.$name + 'SetPageAndSort', {
-                    sort: $list.$sort,
-                    pagination: $list.$pagination.data
-                });
-            }
         }
     }
 })();

@@ -2,13 +2,14 @@
     angular.module('d.Filters')
     .directive('dFilters', filtersDirective);
 
-    function filtersDirective() {
+    filtersDirective.$inject = ['$rootScope'];
+
+    function filtersDirective($rootScope) {
         return {
             templateUrl: 'filters.tpl.html',
             replace: true,
             scope: {
                 listName: '@',
-                $setup: '&setup',
                 $fields: '&fields',
                 autoSubmit: '@'
             },
@@ -18,7 +19,6 @@
         };
 
         function listController($scope) {
-            var _pageAndSortData = {};
             var $filters = this;
             $filters.$model = {};
 
@@ -29,15 +29,10 @@
             }
 
             function submit() {
-                if ($filters.$setup() && $filters.$setup().filters && $filters.$setup().filters.onChange) {
-                    $filters.$setup().filters.onChange(angular.extend({}, $filters.$model, _pageAndSortData));
-                }
+                //broadcasts event for list to reload
+                $rootScope.$broadcast($filters.listName + 'Reload', $filters.$model);
             }
 
-            $scope.$on($filters.listName + 'SetPageAndSort', function(event, data) {
-                _pageAndSortData = data;
-                submit();
-            });
         }
     }
 })();
