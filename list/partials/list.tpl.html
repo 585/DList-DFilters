@@ -68,21 +68,21 @@
     <section ng-if="$list.$setup.enable.pagination" class="d-list-pagination">
         <div class="input-group d-list-pagination__page-links">
             <span ng-bind="$list.$setup.i18n.pagination.prev" ng-click="$list.$pagination.pageDown()"
-                ng-disabled="$list.$pagination.data.page === 1" class="input-group-addon btn btn-default d-list-pagination__prev"></span>
+                ng-disabled="$list.$pagination.page === 1" class="input-group-addon btn btn-default d-list-pagination__prev"></span>
             <input type="text" class="form-control" ng-blur="$list.$pagination.ensureValidPage()"
-                ng-model="$list.$pagination.data.page" class="d-list-pagination__number"/>
+                ng-model="$list.$pagination.page" class="d-list-pagination__number"/>
             <span ng-bind="$list.$setup.i18n.pagination.next" ng-click="$list.$pagination.pageUp()"
-                ng-disabled="$list.$pagination.data.page === $list.$pagination.totalPages()"
+                ng-disabled="$list.$pagination.page === $list.$pagination.totalPages()"
                 class="input-group-addon btn btn-default d-list-pagination__next"></span>
         </div>
         <div class="d-list-pagination-summary">
-            <div class="d-list-pagination-summary__items-number">Showing items: {{$list.$pagination.fromItem()}} - {{$list.$pagination.toItem()}} of {{$list.$pagination.data.total}}</div>
+            <div class="d-list-pagination-summary__items-number">Showing items: {{$list.$pagination.fromItem()}} - {{$list.$pagination.toItem()}} of {{$list.$pagination.total}}</div>
             <div class="d-list-pagination-summary__selected">Selected: {{$list.selected()}}</div>
             <div class="d-list-pagination-summary__total-pages">Total pages: {{$list.$pagination.totalPages()}}</div>
             <br/>
-            <div ng-if="$list.$pagination.data.pageSizeOptions" class="d-list-pagination-summary__items-number-select btn-group">
-                <button ng-repeat="pageSizeOption in $list.$pagination.data.pageSizeOptions"
-                    ng-class="{active: pageSizeOption === $list.$pagination.data.pageSize}"
+            <div ng-if="$list.$pagination.pageSizeOptions" class="d-list-pagination-summary__items-number-select btn-group">
+                <button ng-repeat="pageSizeOption in $list.$pagination.pageSizeOptions"
+                    ng-class="{active: pageSizeOption === $list.$pagination.pageSize}"
                     ng-click="$list.$pagination.setPageSize(pageSizeOption)"
                     type="button" class="btn btn-default">{{pageSizeOption}}</button>
             </div>
