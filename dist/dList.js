@@ -12,6 +12,7 @@ $templateCache.put("action.delete-items.tpl.html","<li>\n    <a href=\"\" ng-cli
 $templateCache.put("action.select-all.tpl.html","<li>\n    <a href=\"\" ng-click=\"savm.selectAll()\">Select All</a>\n</li>");
 $templateCache.put("action.select-inverse.tpl.html","<li>\n    <a href=\"\" ng-click=\"sivm.selectInverse()\">Select Inverse</a>\n</li>");
 $templateCache.put("action.select-none.tpl.html","<li>\n    <a href=\"\" ng-click=\"snvm.selectNone()\">Select None</a>\n</li>");
+$templateCache.put("custom-filters.tpl.html","<form role=\"form\" class=\"row d-filters\" ng-transclude></form>\n");
 $templateCache.put("filters.tpl.html","<form role=\"form\" class=\"row d-filters\">\n    <div ng-repeat=\"field in $filters.$fields()\" ng-switch=\"field.type\">\n        <div ng-switch-when=\"text\" class=\"form-group col-xs-{{field.size[0]}} col-sm-{{field.size[1]}} col-md-{{field.size[2]}} col-lg-{{field.size[3]}} d-filters__text-field\">\n            <label for=\"{{field.ngModel}}\">{{field.label}}</label>\n            <input type=\"text\" name=\"{{field.ngModel}}\" class=\"form-control\" ng-model=\"$filters.$model[field.ngModel]\"\n                ng-model-options=\"{ updateOn: \'default blur\', debounce: {\'default\': 500, \'blur\': 0} }\" />\n        </div>\n        <div ng-switch-when=\"select\" class=\"form-group col-xs-{{field.size[0]}} col-sm-{{field.size[1]}} col-md-{{field.size[2]}} col-lg-{{field.size[3]}} d-filters__select-box\">\n            <label for=\"{{field.ngModel}}\">{{field.label}}</label>\n            <select name=\"{{field.ngModel}}\" class=\"form-control\" ng-model=\"$filters.$model[field.ngModel]\" ng-options=\"option.key as option.value for option in field.ngOptions\">\n            </select>\n        </div>\n        <div ng-switch-when=\"checkbox\" class=\"checkbox col-xs-{{field.size[0]}} col-sm-{{field.size[1]}} col-md-{{field.size[2]}} col-lg-{{field.size[3]}} d-filters__checkbox\">\n            <label>\n                <input type=\"checkbox\" ng-model=\"$filters.$model[field.ngModel]\"/>{{field.label}}\n            </label>\n        </div>\n        <div ng-switch-when=\"selectize\" class=\"col-xs-{{field.size[0]}} col-sm-{{field.size[1]}} col-md-{{field.size[2]}} col-lg-{{field.size[3]}} d-filters__selectize\">\n            <label for=\"{{field.ngModel}}\">{{field.label}}</label>\n            <selectize ng-model=\"$filters.$model[field.ngModel]\" config=\"field.config\"></selectize>\n        </div>\n        <div ng-switch-when=\"datePicker\" class=\"col-xs-{{field.size[0]}} col-sm-{{field.size[1]}} col-md-{{field.size[2]}} col-lg-{{field.size[3]}} d-filters__date-picker\">\n            <label for=\"{{field.ngModel}}\">{{field.label}}</label>\n            <input type=\"text\" class=\"form-control\" model=\"$filters.$model[field.ngModel]\" date-picker editable/>\n        </div>\n    </div>\n    <button ng-if=\"!$filters.autoSubmit\" class=\"btn btn-primary d-filters__submit\" ng-click=\"$filters.submit()\">Submit</button>\n</form>\n");
 $templateCache.put("edit-input.tpl.html","<div class=\"form-group\">\n    <select ng-if=\"vm.setup.type === \'select\'\" ng-model=\"vm.editValue\" ng-options=\"option for option in vm.selectDataOptions\" class=\"form-control\">\n    </select>\n    <input ng-if=\"vm.setup.type !== \'select\'\" type=\"text\" class=\"form-control\" ng-model=\"vm.editValue\">\n</div>");
 $templateCache.put("edit-mode-button.tpl.html","<span class=\"pull-right\">\n    <button class=\"btn btn-{{size}} btn-primary\" ng-if=\"!$parent.$list.$edit\" type=\"button\" ng-click=\"vm.changeEditMode()\">\n        <span class=\"glyphicon glyphicon-edit\" aria-hidden=\"true\"></span> \n        <span>Edit</span>\n    </button>\n    \n    <button class=\"btn btn-{{size}} btn-success\" ng-if=\"$parent.$list.$edit\" type=\"button\" ng-click=\"vm.saveEditData()\">\n        <span class=\"glyphicon glyphicon-floppy-saved\" aria-hidden=\"true\"></span> \n        <span>Save</span>\n    </button>\n    \n    <button class=\"btn btn-{{size}} btn-default\" ng-if=\"$parent.$list.$edit\" type=\"button\" ng-click=\"vm.cancelEditData()\">\n        <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span> \n        <span>Cancel</span>\n    </button>\n</span>");
@@ -345,6 +346,53 @@ $templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclu
                     dCheckboxesService.unselect(element);
                 });
             }
+        }
+    }
+})();
+
+(function() {
+    angular.module('d.Filters')
+    .directive('dCustomFilters', filtersDirective);
+
+    filtersDirective.$inject = ['$rootScope'];
+
+    function filtersDirective($rootScope) {
+        listController.$inject = ['$scope'];
+        return {
+            templateUrl: 'custom-filters.tpl.html',
+            replace: true,
+            transclude: true,
+            scope: {
+                listName: '@',
+                autoSubmit: '@'
+            },
+            bindToController: true,
+            controller: listController,
+            controllerAs: '$filters'
+        };
+
+        function listController($scope) {
+            var $filters = this;
+
+            $scope.go = function() {
+                console.log('go');
+            }
+
+            $filters.e = 'eee';
+            console.log($filters, $scope);
+            $filters.$model = {};
+
+            $filters.submit = submit;
+
+            if ($filters.autoSubmit) {
+                $scope.$watch('$filters.$model', submit, true);
+            }
+
+            function submit() {
+                //broadcasts event for list to reload
+                $rootScope.$broadcast($filters.listName + 'Reload', $filters.$model);
+            }
+
         }
     }
 })();

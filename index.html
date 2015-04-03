@@ -16,6 +16,27 @@
 
 <body ng-controller="MainController as vm">
 
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-body">
+
+                <d-custom-filters>
+                    <input type="text" ng-model="$filters.ee"/>
+{{$filters}}
+                    <select ng-mode="$filters.sel">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+
+                    <button ng-click="go()"></button>
+                </d-custom-filters>
+
+            </div>
+        </div>
+    </div>
+
+
+
     <br/>
 
     <div class="container">
