@@ -45,8 +45,10 @@
             (function() {
                 if ($scope.filterBound) {
                     _submitOnChange();
-                } else {
+                } else if ($scope.elements() || $scope.url()){
                     _loadModel();
+                } else {
+                	_submitOnChange();
                 }
             })();
 

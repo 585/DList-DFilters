@@ -2,31 +2,32 @@
     angular.module('d.Filters')
     .directive('dCustomFilters', filtersDirective);
 
-    filtersDirective.$inject = ['$rootScope'];
+    filtersDirective.$inject = ['$rootScope', '$compile'];
 
-    function filtersDirective($rootScope) {
+    function filtersDirective($rootScope, $compile) {
         return {
+            restrict: 'E',
             templateUrl: 'custom-filters.tpl.html',
             replace: true,
             transclude: true,
+            link: filtersLink,
             scope: {
                 listName: '@',
                 autoSubmit: '@'
             },
             bindToController: true,
-            controller: listController,
+            controller: filtersController,
             controllerAs: '$filters'
         };
 
-        function listController($scope) {
+        function filtersLink(scope, element, attrs, ctrl, $transcludeFn) {
+            element.append(new $transcludeFn(scope, function(clonedelem, newscope) {
+                $compile(clonedelem)(newscope);
+            }));
+        }
+
+        function filtersController($scope) {
             var $filters = this;
-
-            $scope.go = function() {
-                console.log('go');
-            }
-
-            $filters.e = 'eee';
-            console.log($filters, $scope);
             $filters.$model = {};
 
             $filters.submit = submit;
@@ -36,6 +37,7 @@
             }
 
             function submit() {
+                console.log('submit');
                 //broadcasts event for list to reload
                 $rootScope.$broadcast($filters.listName + 'Reload', $filters.$model);
             }

@@ -12,8 +12,8 @@ $templateCache.put("action.delete-items.tpl.html","<li>\n    <a href=\"\" ng-cli
 $templateCache.put("action.select-all.tpl.html","<li>\n    <a href=\"\" ng-click=\"savm.selectAll()\">Select All</a>\n</li>");
 $templateCache.put("action.select-inverse.tpl.html","<li>\n    <a href=\"\" ng-click=\"sivm.selectInverse()\">Select Inverse</a>\n</li>");
 $templateCache.put("action.select-none.tpl.html","<li>\n    <a href=\"\" ng-click=\"snvm.selectNone()\">Select None</a>\n</li>");
-$templateCache.put("custom-filters.tpl.html","<form role=\"form\" class=\"row d-filters\" ng-transclude></form>\n");
-$templateCache.put("filters.tpl.html","<form role=\"form\" class=\"row d-filters\">\n    <div ng-repeat=\"field in $filters.$fields()\" ng-switch=\"field.type\">\n        <div ng-switch-when=\"text\" class=\"form-group col-xs-{{field.size[0]}} col-sm-{{field.size[1]}} col-md-{{field.size[2]}} col-lg-{{field.size[3]}} d-filters__text-field\">\n            <label for=\"{{field.ngModel}}\">{{field.label}}</label>\n            <input type=\"text\" name=\"{{field.ngModel}}\" class=\"form-control\" ng-model=\"$filters.$model[field.ngModel]\"\n                ng-model-options=\"{ updateOn: \'default blur\', debounce: {\'default\': 500, \'blur\': 0} }\" />\n        </div>\n        <div ng-switch-when=\"select\" class=\"form-group col-xs-{{field.size[0]}} col-sm-{{field.size[1]}} col-md-{{field.size[2]}} col-lg-{{field.size[3]}} d-filters__select-box\">\n            <label for=\"{{field.ngModel}}\">{{field.label}}</label>\n            <select name=\"{{field.ngModel}}\" class=\"form-control\" ng-model=\"$filters.$model[field.ngModel]\" ng-options=\"option.key as option.value for option in field.ngOptions\">\n            </select>\n        </div>\n        <div ng-switch-when=\"checkbox\" class=\"checkbox col-xs-{{field.size[0]}} col-sm-{{field.size[1]}} col-md-{{field.size[2]}} col-lg-{{field.size[3]}} d-filters__checkbox\">\n            <label>\n                <input type=\"checkbox\" ng-model=\"$filters.$model[field.ngModel]\"/>{{field.label}}\n            </label>\n        </div>\n        <div ng-switch-when=\"selectize\" class=\"col-xs-{{field.size[0]}} col-sm-{{field.size[1]}} col-md-{{field.size[2]}} col-lg-{{field.size[3]}} d-filters__selectize\">\n            <label for=\"{{field.ngModel}}\">{{field.label}}</label>\n            <selectize ng-model=\"$filters.$model[field.ngModel]\" config=\"field.config\"></selectize>\n        </div>\n        <div ng-switch-when=\"datePicker\" class=\"col-xs-{{field.size[0]}} col-sm-{{field.size[1]}} col-md-{{field.size[2]}} col-lg-{{field.size[3]}} d-filters__date-picker\">\n            <label for=\"{{field.ngModel}}\">{{field.label}}</label>\n            <input type=\"text\" class=\"form-control\" model=\"$filters.$model[field.ngModel]\" date-picker editable/>\n        </div>\n    </div>\n    <button ng-if=\"!$filters.autoSubmit\" class=\"btn btn-primary d-filters__submit\" ng-click=\"$filters.submit()\">Submit</button>\n</form>\n");
+$templateCache.put("custom-filters.tpl.html","<form role=\"form\" class=\"row d-filters\"></form>\n");
+$templateCache.put("filters.tpl.html","<form role=\"form\" class=\"row d-filters\">\n    <div ng-repeat=\"field in $filters.$fields()\" ng-switch=\"field.type\">\n        \n        <div ng-switch-when=\"text\" class=\"form-group col-xs-{{field.size[0]}} col-sm-{{field.size[1]}} col-md-{{field.size[2]}} col-lg-{{field.size[3]}} d-filters__text-field\">\n            <label for=\"{{field.ngModel}}\">{{field.label}}</label>\n            <input type=\"text\" name=\"{{field.ngModel}}\" class=\"form-control\" ng-model=\"$filters.$model[field.ngModel]\"\n                ng-model-options=\"{ updateOn: \'default blur\', debounce: {\'default\': 500, \'blur\': 0} }\" />\n        </div>\n\n        <div ng-switch-when=\"select\" class=\"form-group col-xs-{{field.size[0]}} col-sm-{{field.size[1]}} col-md-{{field.size[2]}} col-lg-{{field.size[3]}} d-filters__select-box\">\n            <label for=\"{{field.ngModel}}\">{{field.label}}</label>\n            <select name=\"{{field.ngModel}}\" class=\"form-control\" ng-model=\"$filters.$model[field.ngModel]\" ng-options=\"option.key as option.value for option in field.ngOptions\">\n            </select>\n        </div>\n\n        <div ng-switch-when=\"checkbox\" class=\"checkbox col-xs-{{field.size[0]}} col-sm-{{field.size[1]}} col-md-{{field.size[2]}} col-lg-{{field.size[3]}} d-filters__checkbox\">\n            <label>\n                <input type=\"checkbox\" ng-model=\"$filters.$model[field.ngModel]\"/>{{field.label}}\n            </label>\n        </div>\n\n        <div ng-switch-when=\"selectize\" class=\"col-xs-{{field.size[0]}} col-sm-{{field.size[1]}} col-md-{{field.size[2]}} col-lg-{{field.size[3]}} d-filters__selectize\">\n            <label for=\"{{field.ngModel}}\">{{field.label}}</label>\n            <selectize ng-model=\"$filters.$model[field.ngModel]\" config=\"field.config\"></selectize>\n        </div>\n\n        <div ng-switch-when=\"datePicker\" class=\"col-xs-{{field.size[0]}} col-sm-{{field.size[1]}} col-md-{{field.size[2]}} col-lg-{{field.size[3]}} d-filters__date-picker\">\n            <label for=\"{{field.ngModel}}\">{{field.label}}</label>\n            <input type=\"text\" class=\"form-control\" model=\"$filters.$model[field.ngModel]\" date-picker editable/>\n        </div>\n\n    </div>\n    <button ng-if=\"!$filters.autoSubmit\" class=\"btn btn-primary d-filters__submit\" ng-click=\"$filters.submit()\">Submit</button>\n</form>\n");
 $templateCache.put("edit-input.tpl.html","<div class=\"form-group\">\n    <select ng-if=\"vm.setup.type === \'select\'\" ng-model=\"vm.editValue\" ng-options=\"option for option in vm.selectDataOptions\" class=\"form-control\">\n    </select>\n    <input ng-if=\"vm.setup.type !== \'select\'\" type=\"text\" class=\"form-control\" ng-model=\"vm.editValue\">\n</div>");
 $templateCache.put("edit-mode-button.tpl.html","<span class=\"pull-right\">\n    <button class=\"btn btn-{{size}} btn-primary\" ng-if=\"!$parent.$list.$edit\" type=\"button\" ng-click=\"vm.changeEditMode()\">\n        <span class=\"glyphicon glyphicon-edit\" aria-hidden=\"true\"></span> \n        <span>Edit</span>\n    </button>\n    \n    <button class=\"btn btn-{{size}} btn-success\" ng-if=\"$parent.$list.$edit\" type=\"button\" ng-click=\"vm.saveEditData()\">\n        <span class=\"glyphicon glyphicon-floppy-saved\" aria-hidden=\"true\"></span> \n        <span>Save</span>\n    </button>\n    \n    <button class=\"btn btn-{{size}} btn-default\" ng-if=\"$parent.$list.$edit\" type=\"button\" ng-click=\"vm.cancelEditData()\">\n        <span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span> \n        <span>Cancel</span>\n    </button>\n</span>");
 $templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclude class=\"d-list__multi-actions\"></div>\n    <table ng-if=\"!responsiveMode\" class=\"d-list-table\">\n        <thead class=\"d-list-table__headers\" ng-if=\"$list.$setup.enable.header\">\n            <tr>\n                <th class=\"d-list-table__header\" ng-if=\"$list.$setup.enable.checkboxes\"></th>\n                <th class=\"d-list-table__header\" ng-repeat=\"header in $list.$headers\">\n                    <a href=\"\" ng-if=\"$list.headerIsSortable(header)\" ng-click=\"$list.sortBy(header)\" class=\"d-list-table__header-sortable\">\n                        {{$list.getHeaderLabel(header) | capitalize}}\n                        <i ng-if=\"$list.$sort.by === header\" class=\"glyphicon\" ng-class=\"{\'glyphicon-chevron-down\': $list.$sort.order === \'desc\', \'glyphicon-chevron-up\': $list.$sort.order === \'asc\'}\" style=\"font-size: 10px; margin: 4px 0 0 4px\"></i>\n                    </a>\n                    <span ng-if=\"!$list.headerIsSortable(header)\">\n                        {{$list.getHeaderLabel(header) | capitalize}}\n                    </span>\n                </th>\n            </tr>\n        </thead>\n        <tfoot class=\"d-list-table__footer\" ng-if=\"$list.$setup.enable.footer\">\n        </tfoot>\n        <tbody class=\"d-list-table__body\">\n            <tr ng-repeat=\"element in $list.$elements\" class=\"d-list-table__body-row\">\n                <td ng-if=\"$list.$setup.enable.checkboxes\" class=\"d-list-table__body-cell d-list-table__body-cell-checkbox\">\n                    <input type=\"checkbox\" ng-model=\"element.$checked\" />\n                </td>\n                <td ng-hide=\"$list.$edit\" ng-repeat=\"header in $list.$headers\" class=\"d-list-table__body-cell\">\n                    <div ng-if=\"!$list.$setup.templates[header]\">{{element[header]}}</div>\n                    <div ng-if=\"$list.$setup.templates[header]\">\n                        <item data-template=\"$list.$setup.templates[header]\" data-model=\"element[header]\" data-row-model=\"element\"></item>\n                    </div>\n                </td>\n                <td ng-show=\"$list.$edit\" ng-repeat=\"header in $list.$headers\" class=\"d-list-table__body-cell--edit\">\n                    <div class=\"form-group\">\n                        <edit-input data-value=\"element[header]\" data-setup=\"$list.$setup.edit[header]\"></edit-input>\n                    </div>\n                </td>\n            </tr>\n        </tbody>\n    </table>\n\n    <table ng-if=\"responsiveMode\" class=\"d-list-table-small\" ng-repeat=\"element in $list.$elements\">\n        <tbody>\n            <tr ng-repeat=\"header in $list.$headers\" class=\"d-list-table-small__row\">\n                <td class=\"d-list-table-small__header\">\n                    <a href=\"\" ng-if=\"$list.headerIsSortable(header)\" ng-click=\"$list.sortBy(header)\" class=\"d-list-table-small__header-sortable\">\n                        {{$list.getHeaderLabel(header) | capitalize}}\n                        <i ng-if=\"$list.$sort.by === header\" class=\"glyphicon\" ng-class=\"{\'glyphicon-chevron-down\': $list.$sort.order === \'desc\', \'glyphicon-chevron-up\': $list.$sort.order === \'asc\'}\" style=\"font-size: 10px; margin: 4px 0 0 4px\"></i>\n                    </a>\n                    <span ng-if=\"!$list.headerIsSortable(header)\">\n                        {{$list.getHeaderLabel(header) | capitalize}}\n                    </span>\n                </td>\n                <td ng-hide=\"$list.$edit\" class=\"d-list-table-small__body-cell\">\n                    <div ng-if=\"!$list.$setup.templates[header]\">{{element[header]}}</div>\n                    <div ng-if=\"$list.$setup.templates[header]\">\n                        <item data-template=\"$list.$setup.templates[header]\" data-model=\"element[header]\" data-row-model=\"element\"></item>\n                    </div>\n                </td>\n\n                <td ng-show=\"$list.$edit\" class=\"d-list-table-small__body-cell--edit\">\n                    <div class=\"form-group\">\n                        <edit-input data-value=\"element[header]\" data-setup=\"$list.$setup.edit[header]\"></edit-input>\n                    </div>\n                </td>\n            </tr>\n        </tbody>\n    </table>\n\n    <section ng-if=\"$list.$setup.enable.pagination\" class=\"d-list-pagination\">\n        <div class=\"input-group d-list-pagination__page-links\">\n            <span ng-bind=\"$list.$setup.i18n.pagination.prev\" ng-click=\"$list.$pagination.pageDown()\"\n                ng-disabled=\"$list.$pagination.page === 1\" class=\"input-group-addon btn btn-default d-list-pagination__prev\"></span>\n            <input type=\"text\" class=\"form-control\" ng-blur=\"$list.$pagination.ensureValidPage()\"\n                ng-model=\"$list.$pagination.page\" class=\"d-list-pagination__number\"/>\n            <span ng-bind=\"$list.$setup.i18n.pagination.next\" ng-click=\"$list.$pagination.pageUp()\"\n                ng-disabled=\"$list.$pagination.page === $list.$pagination.totalPages()\"\n                class=\"input-group-addon btn btn-default d-list-pagination__next\"></span>\n        </div>\n        <div class=\"d-list-pagination-summary\">\n            <div class=\"d-list-pagination-summary__items-number\">Showing items: {{$list.$pagination.fromItem()}} - {{$list.$pagination.toItem()}} of {{$list.$pagination.total}}</div>\n            <div class=\"d-list-pagination-summary__selected\">Selected: {{$list.selected()}}</div>\n            <div class=\"d-list-pagination-summary__total-pages\">Total pages: {{$list.$pagination.totalPages()}}</div>\n            <br/>\n            <div ng-if=\"$list.$pagination.pageSizeOptions\" class=\"d-list-pagination-summary__items-number-select btn-group\">\n                <button ng-repeat=\"pageSizeOption in $list.$pagination.pageSizeOptions\"\n                    ng-class=\"{active: pageSizeOption === $list.$pagination.pageSize}\"\n                    ng-click=\"$list.$pagination.setPageSize(pageSizeOption)\"\n                    type=\"button\" class=\"btn btn-default\">{{pageSizeOption}}</button>\n            </div>\n        </div>\n    </section>\n</div>\n");}]);
@@ -25,9 +25,7 @@ $templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclu
 
     function mainController() {
         var vm = this;
-        vm.url = 'http://api.icndb.com/jokes/random/38';
-        vm.els = [];
-        vm.setup = {
+        vm.swpSetup = {
             enable: {
                 header: true,
                 footer: false,
@@ -36,66 +34,258 @@ $templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclu
                 filters: true,
                 checkboxes: true
             },
-            defaults: {
-                sort: {
-                    order: 'asc',
-                    by: 'surname'
-                },
-                pagination: {
-                    pageSize: 2,
-                    page: 1,
-                    pageSizeOptions: [2, 5, 10]
-                }
-            },
             templates: {
-                name: '<div>This is a custom template for <b>{{$item.value}}</b></div>'
-            },
-            edit: {
-                name: {
-                    type: 'select',
-                    data: ['Olivia', 'Alex', 'Susanne', 'Winston']
-                },
-                surname: {
-                    type: 'select',
-                    dataUrl: 'http://api.icndb.com/jokes/random/1'
-                }
+                homeworld: '<a href="{{$item.value}}">{{$item.value}}</a>'
             },
             columns: {
-                include: ['name', 'surname', 'age'],
-                exclude: ['age'],
+                exclude: ['films', 'species', 'vehicles', 'starships', 'created', 'edited', 'url'],
                 order: [],
-                sortables: ['surname'],
+                sortables: ['name'],
                 labels: {
-                    name: 'Name own label'
+                    name: 'Star Wars character name',
+                    hair_color: 'Hair',
+                    skin_color: 'Skin',
+                    eye_color: 'Eyes',
+                    birth_year: 'Born'
                 }
             }
         };
 
-        vm.elements = [{
-            id: 1,
-            name: 'Olivia',
-            surname: 'Newton',
-            age: 32
-        }, {
-            id: 2,
-            name: 'Oliver',
-            surname: 'Night',
-            age: 12
-        }, {
-            id: 3,
-            name: 'Felicia',
-            surname: 'Low',
-            age: 43
-        }, {
-            id: 4,
-            name: 'Alex',
-            surname: 'Night'
-        }, {
-            id: 5,
-            name: 'Martin',
-            surname: 'Fair',
-            age: 54
-        }];
+        vm.starWarsPeople = [
+		{
+			"name": "Luke Skywalker",
+			"height": "172",
+			"mass": "77",
+			"hair_color": "blond",
+			"skin_color": "fair",
+			"eye_color": "blue",
+			"birth_year": "19BBY",
+			"gender": "male",
+			"homeworld": "http://swapi.co/api/planets/1/",
+			"films": [
+				"http://swapi.co/api/films/1/",
+				"http://swapi.co/api/films/2/",
+				"http://swapi.co/api/films/3/",
+				"http://swapi.co/api/films/6/"
+			],
+			"species": [
+				"http://swapi.co/api/species/1/"
+			],
+			"vehicles": [
+				"http://swapi.co/api/vehicles/14/",
+				"http://swapi.co/api/vehicles/30/"
+			],
+			"starships": [
+				"http://swapi.co/api/starships/12/",
+				"http://swapi.co/api/starships/22/"
+			],
+			"created": "2014-12-09T13:50:51.644000Z",
+			"edited": "2014-12-20T21:17:56.891000Z",
+			"url": "http://swapi.co/api/people/1/"
+		},
+		{
+			"name": "C-3PO",
+			"height": "167",
+			"mass": "75",
+			"hair_color": "n/a",
+			"skin_color": "gold",
+			"eye_color": "yellow",
+			"birth_year": "112BBY",
+			"gender": "n/a",
+			"homeworld": "http://swapi.co/api/planets/1/",
+			"films": [
+				"http://swapi.co/api/films/1/",
+				"http://swapi.co/api/films/2/",
+				"http://swapi.co/api/films/3/",
+				"http://swapi.co/api/films/4/",
+				"http://swapi.co/api/films/5/",
+				"http://swapi.co/api/films/6/"
+			],
+			"species": [
+				"http://swapi.co/api/species/2/"
+			],
+			"vehicles": [],
+			"starships": [],
+			"created": "2014-12-10T15:10:51.357000Z",
+			"edited": "2014-12-20T21:17:50.309000Z",
+			"url": "http://swapi.co/api/people/2/"
+		},
+		{
+			"name": "R2-D2",
+			"height": "96",
+			"mass": "32",
+			"hair_color": "n/a",
+			"skin_color": "white, blue",
+			"eye_color": "red",
+			"birth_year": "33BBY",
+			"gender": "n/a",
+			"homeworld": "http://swapi.co/api/planets/8/",
+			"films": [
+				"http://swapi.co/api/films/1/",
+				"http://swapi.co/api/films/2/",
+				"http://swapi.co/api/films/3/",
+				"http://swapi.co/api/films/4/",
+				"http://swapi.co/api/films/5/",
+				"http://swapi.co/api/films/6/"
+			],
+			"species": [
+				"http://swapi.co/api/species/2/"
+			],
+			"vehicles": [],
+			"starships": [],
+			"created": "2014-12-10T15:11:50.376000Z",
+			"edited": "2014-12-20T21:17:50.311000Z",
+			"url": "http://swapi.co/api/people/3/"
+		},
+		{
+			"name": "Darth Vader",
+			"height": "202",
+			"mass": "136",
+			"hair_color": "none",
+			"skin_color": "white",
+			"eye_color": "yellow",
+			"birth_year": "41.9BBY",
+			"gender": "male",
+			"homeworld": "http://swapi.co/api/planets/1/",
+			"films": [
+				"http://swapi.co/api/films/1/",
+				"http://swapi.co/api/films/2/",
+				"http://swapi.co/api/films/3/",
+				"http://swapi.co/api/films/6/"
+			],
+			"species": [
+				"http://swapi.co/api/species/1/"
+			],
+			"vehicles": [],
+			"starships": [
+				"http://swapi.co/api/starships/13/"
+			],
+			"created": "2014-12-10T15:18:20.704000Z",
+			"edited": "2014-12-20T21:17:50.313000Z",
+			"url": "http://swapi.co/api/people/4/"
+		},
+		{
+			"name": "Leia Organa",
+			"height": "150",
+			"mass": "49",
+			"hair_color": "brown",
+			"skin_color": "light",
+			"eye_color": "brown",
+			"birth_year": "19BBY",
+			"gender": "female",
+			"homeworld": "http://swapi.co/api/planets/2/",
+			"films": [
+				"http://swapi.co/api/films/1/",
+				"http://swapi.co/api/films/2/",
+				"http://swapi.co/api/films/3/",
+				"http://swapi.co/api/films/6/"
+			],
+			"species": [
+				"http://swapi.co/api/species/1/"
+			],
+			"vehicles": [
+				"http://swapi.co/api/vehicles/30/"
+			],
+			"starships": [],
+			"created": "2014-12-10T15:20:09.791000Z",
+			"edited": "2014-12-20T21:17:50.315000Z",
+			"url": "http://swapi.co/api/people/5/"
+		},
+		{
+			"name": "Owen Lars",
+			"height": "178",
+			"mass": "120",
+			"hair_color": "brown, grey",
+			"skin_color": "light",
+			"eye_color": "blue",
+			"birth_year": "52BBY",
+			"gender": "male",
+			"homeworld": "http://swapi.co/api/planets/1/",
+			"films": [
+				"http://swapi.co/api/films/1/",
+				"http://swapi.co/api/films/5/",
+				"http://swapi.co/api/films/6/"
+			],
+			"species": [
+				"http://swapi.co/api/species/1/"
+			],
+			"vehicles": [],
+			"starships": [],
+			"created": "2014-12-10T15:52:14.024000Z",
+			"edited": "2014-12-20T21:17:50.317000Z",
+			"url": "http://swapi.co/api/people/6/"
+		},
+		{
+			"name": "Beru Whitesun lars",
+			"height": "165",
+			"mass": "75",
+			"hair_color": "brown",
+			"skin_color": "light",
+			"eye_color": "blue",
+			"birth_year": "47BBY",
+			"gender": "female",
+			"homeworld": "http://swapi.co/api/planets/1/",
+			"films": [
+				"http://swapi.co/api/films/1/",
+				"http://swapi.co/api/films/5/",
+				"http://swapi.co/api/films/6/"
+			],
+			"species": [
+				"http://swapi.co/api/species/1/"
+			],
+			"vehicles": [],
+			"starships": [],
+			"created": "2014-12-10T15:53:41.121000Z",
+			"edited": "2014-12-20T21:17:50.319000Z",
+			"url": "http://swapi.co/api/people/7/"
+		}];
+
+
+        vm.swpUrl = 'http://swapi.co/api/planets';
+
+
+        vm.swpSetupRemote = {
+            enable: {
+                header: true,
+                footer: false,
+                sorting: true,
+                pagination: true,
+                filters: true,
+                checkboxes: true
+            },
+            templates: {
+                homeworld: '<a href="{{$item.value}}">{{$item.value}}</a>'
+            },
+            columns: {
+                exclude: ['films', 'species', 'vehicles', 'starships', 'created', 'edited', 'url'],
+                order: [],
+                sortables: ['name'],
+                labels: {
+                    name: 'Star Wars character name',
+                    hair_color: 'Hair',
+                    skin_color: 'Skin',
+                    eye_color: 'Eyes',
+                    birth_year: 'Born'
+                }
+            },
+            data: {
+                url: 'http://swapi.co/api/planets',
+                dataFormat: 'POST | GET',
+                prepare: function(sort, pagination) {
+
+                },
+                success: function(data) {
+
+                },
+                error: function(error) {
+
+                }
+            },
+
+            data: {
+                elements: vm.starWarsPeople
+            }
+        };
 
         vm.fields = [{
             type: 'text',
@@ -354,32 +544,33 @@ $templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclu
     angular.module('d.Filters')
     .directive('dCustomFilters', filtersDirective);
 
-    filtersDirective.$inject = ['$rootScope'];
+    filtersDirective.$inject = ['$rootScope', '$compile'];
 
-    function filtersDirective($rootScope) {
-        listController.$inject = ['$scope'];
+    function filtersDirective($rootScope, $compile) {
+        filtersController.$inject = ['$scope'];
         return {
+            restrict: 'E',
             templateUrl: 'custom-filters.tpl.html',
             replace: true,
             transclude: true,
+            link: filtersLink,
             scope: {
                 listName: '@',
                 autoSubmit: '@'
             },
             bindToController: true,
-            controller: listController,
+            controller: filtersController,
             controllerAs: '$filters'
         };
 
-        function listController($scope) {
+        function filtersLink(scope, element, attrs, ctrl, $transcludeFn) {
+            element.append(new $transcludeFn(scope, function(clonedelem, newscope) {
+                $compile(clonedelem)(newscope);
+            }));
+        }
+
+        function filtersController($scope) {
             var $filters = this;
-
-            $scope.go = function() {
-                console.log('go');
-            }
-
-            $filters.e = 'eee';
-            console.log($filters, $scope);
             $filters.$model = {};
 
             $filters.submit = submit;
@@ -389,6 +580,7 @@ $templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclu
             }
 
             function submit() {
+                console.log('submit');
                 //broadcasts event for list to reload
                 $rootScope.$broadcast($filters.listName + 'Reload', $filters.$model);
             }
@@ -686,8 +878,10 @@ $templateCache.put("list.tpl.html","<div class=\"d-list\">\n    <div ng-transclu
             (function() {
                 if ($scope.filterBound) {
                     _submitOnChange();
-                } else {
+                } else if ($scope.elements() || $scope.url()){
                     _loadModel();
+                } else {
+                	_submitOnChange();
                 }
             })();
 

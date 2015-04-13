@@ -19,25 +19,42 @@
     <div class="container">
         <div class="panel panel-default">
             <div class="panel-body">
+                <d-custom-filters auto-submit="true">
+                    <input type="text" ng-model="$filters.$model.name"
+                        ng-model-options="{updateOn: 'default', debounce: {'default': 500}}"/>
 
-                <d-custom-filters>
-                    <input type="text" ng-model="$filters.ee"/>
-{{$filters}}
-                    <select ng-mode="$filters.sel">
+                    <select ng-model="$filters.$model.select">
                         <option value="1">1</option>
                         <option value="2">2</option>
                     </select>
-
-                    <button ng-click="go()"></button>
                 </d-custom-filters>
 
+                <d-list name="starWarsList" elements="vm.starWarsPeople" setup="vm.swpSetup"></d-list>
             </div>
         </div>
     </div>
 
+    <br>
 
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <d-custom-filters auto-submit="true">
+                    <input type="text" ng-model="$filters.$model.name"
+                        ng-model-options="{updateOn: 'default', debounce: {'default': 500}}"/>
 
-    <br/>
+                    <select ng-model="$filters.$model.select">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+                </d-custom-filters>
+
+                <d-list name="starWarsList" url="vm.swpUrl" setup="vm.swpSetupRemote"></d-list>
+            </div>
+        </div>
+    </div>
+
+    <!-- <br/>
 
     <div class="container">
         <div class="panel panel-default">
@@ -61,7 +78,7 @@
     <div class="container">
         <div class="panel panel-default">
             <div class="panel-body">
-                <d-list name="someNameList2" data-elements="vm.els" data-url="vm.url">
+                <d-list name="someNameList2" data-url="vm.url">
                     <action-box data-label="Select" data-icon="unchecked" data-size="sm">
                         <action-select-all></action-select-all>
                         <action-select-none></action-select-none>
@@ -80,7 +97,7 @@
                     data-setup="vm.setup" auto-submit="true"></d-filters>
             </div>
         </div>
-    </div>
+    </div> -->
     <script src="dist/d-list.min.js"></script>
     <script src="main.controller.js"></script>
 </body>
